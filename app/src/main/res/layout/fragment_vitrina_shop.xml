@@ -59,7 +59,13 @@
 
             <Button
                 android:id="@+id/btn_rating"
-                style="@style/RatingStyle"
+                android:layout_width="30dp"
+                android:layout_height="24dp"
+                android:background="@drawable/tv_round"
+                android:gravity="center"
+                android:padding="2dp"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_estimate"
                 app:layout_constraintEnd_toEndOf="@id/tv_estimate"
                 app:layout_constraintTop_toTopOf="@+id/tv_estimate"
@@ -67,17 +73,28 @@
 
             <TextView
                 android:id="@+id/tv_vitrina_name_of_place"
-                app:layout_constraintBottom_toTopOf="@id/tv_event_type"
-                style="@style/HeaderTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal_16"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:fontFamily="sans-serif-medium"
                 android:paddingEnd="@dimen/spacing_normal_16"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/font_large_20"
+                app:layout_constraintBottom_toTopOf="@id/tv_event_type"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="Салют в честь открытия парка" />
 
             <TextView
                 android:id="@+id/tv_event_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal_16"
                 android:layout_marginBottom="50dp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/color_text_light"
+                android:textSize="@dimen/font_small_14"
                 app:layout_constraintBottom_toBottomOf="@id/flipper_vitrina_shop"
-                style="@style/SubTitleTextStyle"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="Шоу" />
 
@@ -109,7 +126,13 @@
 
                     <TextView
                         android:id="@+id/tv_adress"
-                        style="@style/MenuSmallTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="@dimen/spacing_small_8"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/color_text"
+                        android:textSize="@dimen/font_small_14"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_1"
                         app:layout_constraintStart_toEndOf="@+id/iv_1"
                         app:layout_constraintTop_toTopOf="@+id/iv_1"
@@ -127,10 +150,16 @@
 
                     <TextView
                         android:id="@+id/tv_shop_timetable"
-                        style="@style/MenuSmallTextStyle.Timetable"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="@dimen/spacing_small_8"
                         android:layout_marginEnd="@dimen/spacing_small_8"
+                        android:fontFamily="sans-serif-medium"
                         android:maxEms="18"
                         android:singleLine="false"
+                        android:textColor="@color/color_text"
+                        android:textSize="@dimen/font_small_14"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_2"
                         app:layout_constraintEnd_toStartOf="@+id/guideline5"
                         app:layout_constraintStart_toEndOf="@+id/iv_2"
@@ -149,7 +178,13 @@
 
                     <TextView
                         android:id="@+id/tv_price"
-                        style="@style/MenuSmallTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="@dimen/spacing_small_8"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/color_text"
+                        android:textSize="@dimen/font_small_14"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_3"
                         app:layout_constraintStart_toEndOf="@+id/iv_3"
                         app:layout_constraintTop_toTopOf="@+id/iv_3"
@@ -169,7 +204,13 @@
 
                     <TextView
                         android:id="@+id/tv_shop_phone"
-                        style="@style/MenuSmallTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="@dimen/spacing_small_8"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/color_text"
+                        android:textSize="@dimen/font_small_14"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_4"
                         app:layout_constraintStart_toEndOf="@+id/iv_4"
                         app:layout_constraintTop_toTopOf="@+id/iv_4"
@@ -187,11 +228,17 @@
 
                     <TextView
                         android:id="@+id/tv_website"
-                        style="@style/MenuSmallTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="@dimen/spacing_small_8"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/web_site"
+                        android:textColor="@color/color_text"
+                        android:textSize="@dimen/font_small_14"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_5"
                         app:layout_constraintStart_toEndOf="@+id/iv_5"
                         app:layout_constraintTop_toTopOf="@+id/iv_5"
-                        android:text="@string/web_site"
                         app:layout_constraintVertical_bias="0.0" />
 
                     <androidx.constraintlayout.widget.Guideline
@@ -205,8 +252,14 @@
 
             <TextView
                 android:id="@+id/tv_news_and_events"
-                style="@style/HeaderTextStyle.Normal.Black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal_16"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:fontFamily="sans-serif-medium"
                 android:text="@string/title_news_actions"
+                android:textColor="@color/color_text"
+                android:textSize="@dimen/font_normal_16"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
@@ -229,14 +282,27 @@
 
             <TextView
                 android:id="@+id/tv_about"
-                style="@style/HeaderTextStyle.Normal.Black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal_16"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:fontFamily="sans-serif-medium"
                 android:text="@string/title_about_us"
+                android:textColor="@color/color_text"
+                android:textSize="@dimen/font_normal_16"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_news_and_events" />
 
             <TextView
                 android:id="@+id/tv_about_shop_text"
-                style="@style/DescriptionTextStyle.Margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal_16"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:layout_marginEnd="@dimen/spacing_normal_16"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/color_text"
+                android:textSize="@dimen/font_small_14"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_about"
@@ -244,8 +310,14 @@
 
             <TextView
                 android:id="@+id/tv_events"
-                style="@style/HeaderTextStyle.Normal.Black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal_16"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:fontFamily="sans-serif-medium"
                 android:text="@string/events"
+                android:textColor="@color/color_text"
+                android:textSize="@dimen/font_normal_16"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_pdf" />
 
@@ -253,13 +325,13 @@
                 android:id="@+id/iv_download"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_file_download_black_24dp"
                 android:layout_marginStart="@dimen/spacing_normal_16"
                 android:layout_marginTop="@dimen/spacing_small_8"
+                android:src="@drawable/ic_file_download_black_24dp"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/tv_about_shop_text"
                 app:layout_constraintEnd_toStartOf="@id/tv_pdf"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_about_shop_text"
                 tools:visibility="visible" />
 
             <TextView
@@ -268,13 +340,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_small_8"
                 android:fontFamily="sans-serif-medium"
+                android:text="Посмотреть меню, расписание, услуги"
                 android:textColor="@color/color_text_light"
                 android:textSize="@dimen/font_small_14"
-                android:text="Посмотреть меню, расписание, услуги"
                 android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/iv_download"
                 app:layout_constraintStart_toEndOf="@id/iv_download"
                 app:layout_constraintTop_toTopOf="@id/iv_download"
-                app:layout_constraintBottom_toBottomOf="@id/iv_download"
                 tools:visibility="visible" />
 
             <!--        <androidx.recyclerview.widget.RecyclerView-->

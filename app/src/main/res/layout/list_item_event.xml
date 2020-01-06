@@ -34,25 +34,38 @@
             android:layout_marginTop="@dimen/spacing_normal_16"
             android:layout_marginEnd="@dimen/spacing_normal_16"
             android:background="@drawable/tv_round"
+            android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:padding="4dp"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            android:fontFamily="sans-serif-medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Free" />
 
         <TextView
             android:id="@+id/tv_event_title"
-            style="@style/HeaderTextStyle.Normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal_16"
+            android:layout_marginTop="@dimen/spacing_small_8"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/font_normal_16"
             app:layout_constraintBottom_toTopOf="@id/tv_event_date"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Салют в честь открытия парка" />
 
         <TextView
             android:id="@+id/tv_event_date"
-            style="@style/HeaderTextStyle.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal_16"
+            android:layout_marginTop="@dimen/spacing_small_8"
+            android:layout_marginBottom="@dimen/spacing_small_8"
+            android:fontFamily="sans-serif"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/font_small_14"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="13:00 18.07.19" />
