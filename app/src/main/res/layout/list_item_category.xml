@@ -10,7 +10,16 @@
 
     <TextView
         android:id="@+id/btn_category"
-        style="@style/CategoryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        android:textSize="16sp"
         tools:text="Еда" />
 
 </androidx.cardview.widget.CardView>

@@ -5,5 +5,5 @@
     </item>
     <item
         android:gravity="center"
-        android:drawable="@drawable/ic_imlocal_start"></item>
+        android:drawable="@drawable/ic_imlocal_start" />
 </layer-list>

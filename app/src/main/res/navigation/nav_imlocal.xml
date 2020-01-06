@@ -7,7 +7,26 @@
 
     <fragment
         android:id="@+id/fragment_list_places"
-        android:name="ru.imlocal.ui.FragmentListPlaces"
+        android:name="ru.imlocal.ui.places.FragmentListPlaces"
         android:label="fragment_list_places"
-        tools:layout="@layout/fragment_list_places" />
+        tools:layout="@layout/fragment_list_places">
+        <action
+            android:id="@+id/action_fragment_list_places_to_fragment_vitrina_place"
+            app:destination="@id/fragment_vitrina_place"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_vitrina_place"
+        android:name="ru.imlocal.ui.places.place.FragmentVitrinaPlace"
+        android:label="fragment_vitrina_place"
+        tools:layout="@layout/fragment_vitrina_shop">
+        <argument
+            android:name="placeId"
+            app:argType="integer"
+            android:defaultValue="1" />
+    </fragment>
 </navigation>

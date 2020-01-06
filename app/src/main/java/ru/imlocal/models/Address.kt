@@ -9,5 +9,4 @@ data class Address(
     val housing: String,
     val latitude: Double,
     val longitude: Double
-) {
-}
+)
