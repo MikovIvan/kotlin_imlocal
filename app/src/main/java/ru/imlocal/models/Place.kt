@@ -18,11 +18,12 @@ data class Place(
     val shopShortDescription: String,
     val shopFullDescription: String,
     val shopRating: String,
-    val shopPhotos: List<ShopPhoto> = listOf(),
+    @SerializedName("shopPhotos")
+    val placePhotos: List<PlacePhoto> = listOf(),
     @SerializedName("events")
-    val shopActionList: List<Action> = listOf(),
+    val placeActionList: List<Action> = listOf(),
     @SerializedName("happenings")
-    val shopEventList: List<Event> = listOf(),
+    val placeEventList: List<Event> = listOf(),
     val shopAddress: Address,
     val shopAvgRating: Double,
     val shopLinkPdf: String
