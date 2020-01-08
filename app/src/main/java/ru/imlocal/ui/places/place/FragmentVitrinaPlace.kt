@@ -27,12 +27,21 @@ class FragmentVitrinaPlace : Fragment() {
     private lateinit var viewModel: VitrinaPlaceViewModel
     private lateinit var placeRepository: PlaceRepository
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return inflater.inflate(R.layout.fragment_vitrina_shop, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val safeArgs: FragmentVitrinaPlaceArgs by navArgs()
         val placeId = safeArgs.placeId
@@ -50,9 +59,6 @@ class FragmentVitrinaPlace : Fragment() {
             progress_bar.visibility = if (it == NetworkState.LOADING) View.VISIBLE else View.GONE
             txt_error.visibility = if (it == NetworkState.ERROR) View.VISIBLE else View.GONE
         })
-
-
-        return inflater.inflate(R.layout.fragment_vitrina_shop, container, false)
     }
 
     private fun bindUI(place: Place) {
@@ -60,22 +66,30 @@ class FragmentVitrinaPlace : Fragment() {
         tv_adress.text = place.shopAddress.toString()
         tv_shop_timetable.text = place.shopWorkTime
         tv_shop_phone.text = place.shopPhone
-        tv_price.text = place.shopCostMin + "-" + place.shopCostMax
+        tv_price.text = "${place.shopCostMin} - ${place.shopCostMax}"
         tv_about_shop_text.text = place.shopFullDescription
-        flipperImages(place.shopPhotos[0].shopPhoto, true)
+        btn_rating.text = place.shopAvgRating.toString()
+        for (shopPhoto in place.placePhotos) {
+            when (place.placePhotos.size) {
+                1 -> flipperImages(shopPhoto.shopPhoto, false)
+                in 2..Int.MAX_VALUE -> flipperImages(shopPhoto.shopPhoto, true)
+            }
+        }
     }
 
     fun flipperImages(photo: String, autostart: Boolean) {
-        val imageView: ImageView = ImageView(activity)
+        val imageView = ImageView(activity)
         imageView.scaleType = ImageView.ScaleType.CENTER_CROP
         Glide.with(this)
             .load(BASE_IMAGE_URL + SHOP_IMAGE_DIRECTION + photo)
             .into(imageView)
         flipper_vitrina_shop.addView(imageView)
-        flipper_vitrina_shop.flipInterval = 4000
-        flipper_vitrina_shop.isAutoStart = autostart
+        flipper_vitrina_shop.flipInterval = 2000
         flipper_vitrina_shop.setInAnimation(activity, android.R.anim.slide_in_left)
         flipper_vitrina_shop.setOutAnimation(activity, android.R.anim.slide_out_right)
+        if (autostart) {
+            flipper_vitrina_shop.startFlipping()
+        }
     }
 
     private fun getViewModel(placeId: Int): VitrinaPlaceViewModel {

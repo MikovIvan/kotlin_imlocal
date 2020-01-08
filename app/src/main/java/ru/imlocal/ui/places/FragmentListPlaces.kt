@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_list_places.*
@@ -30,8 +31,11 @@ class FragmentListPlaces : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return inflater.inflate(R.layout.fragment_list_places, container, false)
+    }
 
-        val view: View = inflater.inflate(R.layout.fragment_list_places, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val apiService: Api = Api.getClient()
         placeRepository = PlacePagedListRepository(apiService)
@@ -45,6 +49,7 @@ class FragmentListPlaces : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = placeAdapter
 
+        fab.setOnClickListener { findNavController().navigate(R.id.fragment_map) }
 
         viewModel.placePagedList.observe(this, Observer {
             placeAdapter.submitList(it)
@@ -61,7 +66,6 @@ class FragmentListPlaces : Fragment() {
             }
         })
 
-        return view
     }
 
     private fun getViewModel(): ListPlacesViewModel {

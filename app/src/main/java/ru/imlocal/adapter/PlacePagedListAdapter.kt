@@ -17,7 +17,7 @@ import ru.imlocal.data.api.BASE_IMAGE_URL
 import ru.imlocal.data.api.SHOP_IMAGE_DIRECTION
 import ru.imlocal.data.repository.NetworkState
 import ru.imlocal.models.Place
-import ru.imlocal.ui.places.FragmentListPlacesDirections
+import ru.imlocal.ui.main.FragmentMainDirections
 
 class PlacePagedListAdapter(val context: Context, val fragment: Fragment) :
     PagedListAdapter<Place, RecyclerView.ViewHolder>(PlaceDiffCallBack()) {
@@ -83,12 +83,12 @@ class PlacePagedListAdapter(val context: Context, val fragment: Fragment) :
             itemView.tv_rating.text = place?.shopAvgRating.toString()
 
             Glide.with(itemView.context)
-                .load(BASE_IMAGE_URL + SHOP_IMAGE_DIRECTION + place?.shopPhotos?.get(0)?.shopPhoto)
+                .load(BASE_IMAGE_URL + SHOP_IMAGE_DIRECTION + place?.placePhotos?.get(0)?.shopPhoto)
                 .into(itemView.iv_shopimage)
 
             itemView.setOnClickListener {
                 val action =
-                    FragmentListPlacesDirections.actionFragmentListPlacesToFragmentVitrinaPlace(
+                    FragmentMainDirections.actionFragmentMainToFragmentVitrinaPlace(
                         place!!.shopId
                     )
                 findNavController(fragment).navigate(action)
