@@ -13,19 +13,19 @@
         android:orientation="vertical">
 
         <ProgressBar
-            android:id="@+id/progress_bar"
+            android:id="@+id/progress_bar_vitrina_action"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/txt_error"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Connection Problem!!"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/txt_error_vitrina_action"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Connection Problem!!"
+            android:visibility="gone" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -46,9 +46,9 @@
                 android:layout_marginStart="@dimen/spacing_normal_16"
                 android:layout_marginTop="@dimen/spacing_small_8"
                 app:cardCornerRadius="40dp"
+                app:layout_constraintBottom_toTopOf="@id/flipper_vitrina_action"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideline5"
-                app:layout_constraintBottom_toTopOf="@id/flipper_vitrina_action">
+                app:layout_constraintTop_toTopOf="@+id/guideline5">
 
                 <ImageView
                     android:id="@+id/iv_icon_vitrina"
@@ -65,9 +65,9 @@
                 android:layout_marginStart="@dimen/spacing_normal_16"
                 android:layout_marginTop="@dimen/spacing_small_8"
                 android:fontFamily="sans-serif-medium"
+                android:maxLines="2"
                 android:textColor="@color/color_text"
                 android:textSize="@dimen/font_normal_16"
-                android:maxLines="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@id/cv_icon"
@@ -79,12 +79,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_normal_16"
-                android:layout_marginEnd="@dimen/spacing_normal_16"
                 android:layout_marginTop="@dimen/spacing_small_8"
+                android:layout_marginEnd="@dimen/spacing_normal_16"
                 android:fontFamily="sans-serif-medium"
+                android:maxLines="2"
                 android:textColor="@color/color_text_light"
                 android:textSize="@dimen/font_small_14"
-                android:maxLines="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/cv_icon"
@@ -120,8 +120,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_normal_16"
-                android:layout_marginEnd="@dimen/spacing_normal_16"
                 android:layout_marginTop="@dimen/spacing_small_8"
+                android:layout_marginEnd="@dimen/spacing_normal_16"
                 android:fontFamily="sans-serif"
                 android:textColor="@color/color_text"
                 android:textSize="@dimen/font_small_14"
@@ -135,9 +135,9 @@
                 android:id="@+id/tv_date_vitrina"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal_16"
                 android:layout_marginEnd="@dimen/spacing_normal_16"
                 android:layout_marginBottom="@dimen/spacing_normal_16"
-                android:layout_marginTop="@dimen/spacing_normal_16"
                 android:fontFamily="sans-serif"
                 android:textColor="@color/color_text_light"
                 android:textSize="@dimen/font_small_14"

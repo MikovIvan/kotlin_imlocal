@@ -23,7 +23,6 @@ import ru.imlocal.data.repository.PlacePagedListRepository
 class FragmentListPlaces : Fragment() {
 
     private lateinit var viewModel: ListPlacesViewModel
-
     lateinit var placeRepository: PlacePagedListRepository
 
     companion object {

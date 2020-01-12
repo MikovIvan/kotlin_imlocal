@@ -54,8 +54,10 @@ class FragmentVitrinaPlace : Fragment() {
         })
 
         viewModel.networkState.observe(this, Observer {
-            progress_bar.visibility = if (it == NetworkState.LOADING) View.VISIBLE else View.GONE
-            txt_error.visibility = if (it == NetworkState.ERROR) View.VISIBLE else View.GONE
+            progress_bar_vitrina_place.visibility =
+                if (it == NetworkState.LOADING) View.VISIBLE else View.GONE
+            txt_error_vitrina_place.visibility =
+                if (it == NetworkState.ERROR) View.VISIBLE else View.GONE
         })
     }
 
