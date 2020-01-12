@@ -1,3 +1,74 @@
 <resources>
-    <string name="app_name">imlocal</string>
+    <string name="app_name">I\'m Local</string>
+    <string name="policy"><u>Политика конфиденциальности</u></string>
+
+    <!--auth-->
+    <string name="facebook_app_id">2464279037139187</string>
+    <string name="fb_login_protocol_scheme">fb2464279037139187</string>
+
+    <string name="server_client_id">332679075210-j6m3l81a7l7e03k6tesu55a3s7imhq28.apps.googleusercontent.com</string>
+    <integer name="com_vk_sdk_AppId">7103569</integer>
+
+    <!--navigation drawer-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="menu_item_drawer_login">Вход</string>
+    <string name="menu_item_drawer_favorites">Избранное</string>
+    <string name="menu_item_drawer_help">Помощь</string>
+    <string name="menu_item_drawer_for_business">Бизнесу</string>
+    <string name="menu_item_drawer_logout">Выход</string>
+    <string name="feedback_email">feedback@imlocal.ru</string>
+    <string name="title_about_event">О событии</string>
+    <string name="title_news_actions">Новости, акции</string>
+    <string name="title_about_us">О нас</string>
+    <string name="web_site">веб-сайт</string>
+    <string name="title_theme">Тема</string>
+    <string name="e_mail">E-mail</string>
+    <string name="title_message">Сообщение</string>
+    <string name="btn_send">Отправить</string>
+    <string name="hint_enter_your_message">Введите Ваше сообщение</string>
+    <string name="hint_enter_your_email">Введите Ваш электронный адрес</string>
+    <string name="hint_enter_your_message_theme">Введите тему сообщения</string>
+    <string name="date">Дата:</string>
+    <string name="title_free">Бесплатные</string>
+    <string name="datepicker_ready">Готово</string>
+    <string name="datepicker_clear">Очистить</string>
+    <string name="title_login">Вход через  социальные сети</string>
+    <string name="title_conditions">Продолжая, Вы соглашаетесь с нашими Условиями использования и подтверждаете, что прочли нашу Политику конфиденциальности.</string>
+    <string name="event_price_free">Free</string>
+    <string name="title_location_permission">Доступ к данным о местонахождении устройства</string>
+    <string name="ok">ок</string>
+    <string name="text_location_permission">Это разрешение необходимо для корректной работы приложения</string>
+    <string name="add_to_favorite">Добавлено в избранное</string>
+    <string name="delete_from_favorites">Удалено из избранного</string>
+    <string name="need_login">Необходимо войти</string>
+    <string name="login">Войти</string>
+    <string name="profile">Профиль</string>
+    <string name="personal_data">Личные данные</string>
+    <string name="family_name">Фамилия</string>
+    <string name="enter_your_family_name">Введите Вашу фамилию</string>
+    <string name="name">Имя</string>
+    <string name="enter_your_name">Введите Ваше имя</string>
+    <string name="middle_name">Отчество</string>
+    <string name="enter_your_middle_name">Введите Ваше отчество</string>
+    <string name="address">Адрес</string>
+    <string name="enter_your_address">Введите Ваш адрес</string>
+    <string name="link_another_account">Привязать другой аккаунт</string>
+
+    <string name="network_error_message">Network error</string>
+    <string name="remote_error_message">Remote server error</string>
+    <string name="unknown_error_message">Unknown error</string>
+    <string name="events">События</string>
+    <string name="need_editable">Нужно перейти в режим редактирования</string>
+
+    <string name="tap_to_reload">Нажмите для перезагрузки</string>
+    <string name="error_msg_no_internet">Нет подключения к интернету</string>
+    <string name="error_msg_timeout">Сервер не отвечает</string>
+    <string name="error_msg_unknown">Ошибка</string>
+    <string name="error_msg">Извините! Невозможно отобразить данные.</string>
+    <string name="btn_retry">Повторить</string>
+    <string name="msg_loading">Загрузка…</string>
+    <string name="choose_pdf_file">Выберете pdf файл</string>
+    <string name="cancel">Отмена</string>
+    <string name="retry">retry</string>
 </resources>

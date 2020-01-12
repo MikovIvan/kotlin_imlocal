@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_imlocal.xml"
+    app:startDestination="@id/fragment_main">
+
+    <fragment
+        android:id="@+id/fragment_list_places"
+        android:name="ru.imlocal.ui.places.FragmentListPlaces"
+        tools:layout="@layout/fragment_list_places">
+        <action
+            android:id="@+id/action_fragment_list_places_to_fragment_vitrina_place"
+            app:destination="@id/fragment_vitrina_place"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_vitrina_place"
+        android:name="ru.imlocal.ui.places.place.FragmentVitrinaPlace">
+        <argument
+            android:name="placeId"
+            android:defaultValue="1"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_main"
+        android:name="ru.imlocal.ui.main.FragmentMain"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_fragment_main_to_fragment_vitrina_place"
+            app:destination="@id/fragment_vitrina_place"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_fragment_main_to_fragment_vitrina_action"
+            app:destination="@id/fragment_vitrina_action"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_splash"
+        android:name="ru.imlocal.ui.splash.FragmentSplash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_fragmentSplash_to_fragmentMain"
+            app:destination="@id/fragment_main"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_list_actions"
+        android:name="ru.imlocal.ui.actions.FragmentListActions"
+        android:label="fragment_list_actions"
+        tools:layout="@layout/fragment_list_actions" />
+    <fragment
+        android:id="@+id/fragment_list_events"
+        android:name="ru.imlocal.ui.events.FragmentListEvents"
+        android:label="fragment_list_events"
+        tools:layout="@layout/fragment_list_events" />
+    <fragment
+        android:id="@+id/fragment_business"
+        android:name="ru.imlocal.ui.business.FragmentBusiness"
+        android:label="fragment_business"
+        tools:layout="@layout/fragment_business" />
+    <fragment
+        android:id="@+id/fragment_favorites"
+        android:name="ru.imlocal.ui.favorites.FragmentFavorites"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" />
+    <fragment
+        android:id="@+id/fragment_feedback"
+        android:name="ru.imlocal.ui.feedback.FragmentFeedback"
+        android:label="fragment_feedback"
+        tools:layout="@layout/fragment_feedback" />
+    <fragment
+        android:id="@+id/fragment_map"
+        android:name="ru.imlocal.ui.map.FragmentMap"
+        tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/fragment_vitrina_action"
+        android:name="ru.imlocal.ui.actions.action.FragmentVitrinaAction">
+        <argument
+            android:name="actId"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
+</navigation>
