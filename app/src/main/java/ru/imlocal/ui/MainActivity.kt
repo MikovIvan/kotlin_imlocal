@@ -43,6 +43,9 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination: NavDestination, _ ->
             when (destination.id) {
+                R.id.fragment_vitrina_action -> {
+                    setToolbar(true)
+                }
                 R.id.fragment_vitrina_place -> {
                     setToolbar(false)
                 }

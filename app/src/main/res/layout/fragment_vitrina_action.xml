@@ -1,14 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.actions.action.FragmentVitrinaAction">
+    android:background="@color/color_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
     <TextView
+        android:id="@+id/txt_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="FragmentVitrinaAction" />
+        android:text="Connection Problem!!"
+        android:visibility="gone" />
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="?attr/actionBarSize" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/spacing_normal_16"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                app:cardCornerRadius="40dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline5"
+                app:layout_constraintBottom_toTopOf="@id/flipper_vitrina_action">
+
+                <ImageView
+                    android:id="@+id/iv_icon_vitrina"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:scaleType="centerCrop"
+                    tools:srcCompat="@tools:sample/avatars" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_shop_title_vitrina"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal_16"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/color_text"
+                android:textSize="@dimen/font_normal_16"
+                android:maxLines="2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/cv_icon"
+                app:layout_constraintTop_toBottomOf="@+id/guideline5"
+                tools:text="Кафе-паб «Гвозди»" />
+
+            <TextView
+                android:id="@+id/tv_shop_adress_vitrina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal_16"
+                android:layout_marginEnd="@dimen/spacing_normal_16"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/color_text_light"
+                android:textSize="@dimen/font_small_14"
+                android:maxLines="2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/cv_icon"
+                app:layout_constraintTop_toBottomOf="@+id/tv_shop_title_vitrina"
+                tools:text="Тут дб адрес" />
+
+            <ViewFlipper
+                android:id="@+id/flipper_vitrina_action"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:foreground="@drawable/image_gradient"
+                app:layout_constraintBottom_toTopOf="@+id/tv_action_title_vitrina"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_shop_adress_vitrina" />
+
+            <TextView
+                android:id="@+id/tv_action_title_vitrina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal_16"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/color_text"
+                android:textSize="@dimen/font_large_20"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/flipper_vitrina_action"
+                tools:text="Неделя грузинской кухни" />
+
+            <TextView
+                android:id="@+id/tv_action_description_vitrina"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal_16"
+                android:layout_marginEnd="@dimen/spacing_normal_16"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/color_text"
+                android:textSize="@dimen/font_small_14"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_action_title_vitrina"
+                tools:text="В своем стремлении улучшить пользовательский опыт мы упускаем, что стремящиеся вытеснить традиционное производство, нанотехнологии набирают популярность среди определенных слоев населения, а значит, должны быть смешаны с неуникальными данными до степени совершенной неузнаваемости, из-за чего возрастает их статус бесполезности. Лишь стремящиеся вытеснить традиционное производство
+В своем стремлении улучшить пользовательский опыт мы упускаем, что стремящиеся вытеснить традиционное производство, нанотехнологии набирают популярность среди определенных слоев населения, а значит, должны быть смешаны с неуникальными данными до степени совершенной " />
+
+            <TextView
+                android:id="@+id/tv_date_vitrina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_normal_16"
+                android:layout_marginBottom="@dimen/spacing_normal_16"
+                android:layout_marginTop="@dimen/spacing_normal_16"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/color_text_light"
+                android:textSize="@dimen/font_small_14"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="02.05.19–13.06.19" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/fragment_list_places"
         android:name="ru.imlocal.ui.places.FragmentListPlaces"
-
         tools:layout="@layout/fragment_list_places">
         <action
             android:id="@+id/action_fragment_list_places_to_fragment_vitrina_place"
@@ -21,23 +20,27 @@
 
     <fragment
         android:id="@+id/fragment_vitrina_place"
-        android:name="ru.imlocal.ui.places.place.FragmentVitrinaPlace"
-
-        tools:layout="@layout/fragment_vitrina_shop">
+        android:name="ru.imlocal.ui.places.place.FragmentVitrinaPlace">
         <argument
             android:name="placeId"
-            app:argType="integer"
-            android:defaultValue="1" />
+            android:defaultValue="1"
+            app:argType="integer" />
     </fragment>
 
     <fragment
         android:id="@+id/fragment_main"
         android:name="ru.imlocal.ui.main.FragmentMain"
-
         tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_fragment_main_to_fragment_vitrina_place"
             app:destination="@id/fragment_vitrina_place"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_fragment_main_to_fragment_vitrina_action"
+            app:destination="@id/fragment_vitrina_action"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -84,4 +87,12 @@
         android:id="@+id/fragment_map"
         android:name="ru.imlocal.ui.map.FragmentMap"
         tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/fragment_vitrina_action"
+        android:name="ru.imlocal.ui.actions.action.FragmentVitrinaAction">
+        <argument
+            android:name="actId"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
 </navigation>
