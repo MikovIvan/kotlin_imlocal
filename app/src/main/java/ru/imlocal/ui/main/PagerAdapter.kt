@@ -11,24 +11,20 @@ class PagerAdapter(fm: FragmentManager) :
     FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
-        var fragment: Fragment = FragmentListPlaces()
-        when (position) {
-            0 -> fragment = FragmentListPlaces()
-            1 -> fragment = FragmentListActions()
-            2 -> fragment = FragmentListEvents()
+        return when (position) {
+            0 -> FragmentListPlaces.newInstance()
+            1 -> FragmentListActions.newInstance()
+            else -> FragmentListEvents.newInstance()
         }
-        return fragment
     }
 
     override fun getCount(): Int = 3
 
     override fun getPageTitle(position: Int): CharSequence? {
-        var title: String = ""
-        when (position) {
-            0 -> title = "places"
-            1 -> title = "actions"
-            2 -> title = "events"
+        return when (position) {
+            0 -> "places"
+            1 -> "actions"
+            else -> "events"
         }
-        return title
     }
 }

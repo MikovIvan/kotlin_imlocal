@@ -1,13 +1,11 @@
 package ru.imlocal.ui.main
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.fragment_main.*
 import ru.imlocal.R
@@ -16,15 +14,8 @@ class FragmentMain : Fragment() {
 
     private lateinit var pagerAdapter: PagerAdapter
 
-    companion object {
-        fun newInstance() = FragmentMain()
-    }
-
-    private lateinit var viewModel: MainViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         pagerAdapter = PagerAdapter(childFragmentManager)
     }
 
@@ -39,26 +30,22 @@ class FragmentMain : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         fragment_main_tabs.setupWithViewPager(fragment_main_viewpager)
         fragment_main_viewpager.adapter = pagerAdapter
-//       добавить сохранение текущего таба
-        setUpLeftRightViewColor(0)
+        setUpLeftRightViewColor()
         fragment_main_viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {}
-            @SuppressLint("MissingSuperCall")
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
             }
-
             override fun onPageSelected(position: Int) {
                 setUpLeftRightViewColor(position)
             }
         })
-
     }
 
-    private fun setUpLeftRightViewColor(position: Int) {
+    private fun setUpLeftRightViewColor(position: Int = 0) {
         when (position) {
             0 -> {
                 fragment_main_v_left.setBackgroundColor(
@@ -82,13 +69,6 @@ class FragmentMain : Fragment() {
                     )
                 )
             }
-
         }
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-    }
-
 }

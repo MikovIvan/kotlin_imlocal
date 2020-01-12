@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        prepareData()
 
         setSupportActionBar(activity_main_toolbar)
 
@@ -66,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBar(navController, appBarConfiguration)
         setupNavigationMenu(navController)
 
+        savedInstanceState ?: prepareData()
     }
 
     private fun setupNavigationMenu(navController: NavController) {
@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
 
                 is LoadResult.Success -> {
                     val action =
-                        FragmentSplashDirections.actionFragmentSplashToFragmentMain() // use safeargs plugin
+                        FragmentSplashDirections.actionFragmentSplashToFragmentMain()
                     navController.navigate(action)
                 }
 

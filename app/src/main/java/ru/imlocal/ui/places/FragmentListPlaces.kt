@@ -26,6 +26,10 @@ class FragmentListPlaces : Fragment() {
 
     lateinit var placeRepository: PlacePagedListRepository
 
+    companion object {
+        fun newInstance() = FragmentListPlaces()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
