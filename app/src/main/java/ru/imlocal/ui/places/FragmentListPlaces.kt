@@ -46,10 +46,8 @@ class FragmentListPlaces : Fragment() {
 
         viewModel = getViewModel()
 
-        val activity = activity as Context
-
         val recyclerView: RecyclerView = view.findViewById(R.id.rv_fragment_list_places)
-        val placeAdapter = PlacePagedListAdapter(activity, this)
+        val placeAdapter = PlacePagedListAdapter(activity as Context, this)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = placeAdapter
 

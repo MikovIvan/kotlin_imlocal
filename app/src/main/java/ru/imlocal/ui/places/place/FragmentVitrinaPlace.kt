@@ -26,6 +26,7 @@ class FragmentVitrinaPlace : Fragment() {
 
     private lateinit var viewModel: VitrinaPlaceViewModel
     private lateinit var placeRepository: PlaceRepository
+    private val args: FragmentVitrinaPlaceArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,13 +44,10 @@ class FragmentVitrinaPlace : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val safeArgs: FragmentVitrinaPlaceArgs by navArgs()
-        val placeId = safeArgs.placeId
-
         val apiService: Api = Api.getClient()
         placeRepository = PlaceRepository(apiService)
 
-        viewModel = getViewModel(placeId)
+        viewModel = getViewModel(args.placeId)
 
         viewModel.placeDetails.observe(this, Observer {
             bindUI(it)

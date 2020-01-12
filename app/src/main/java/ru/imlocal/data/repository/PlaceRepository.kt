@@ -1,20 +1,18 @@
 package ru.imlocal.data.repository
 
 import androidx.lifecycle.LiveData
-import io.reactivex.disposables.CompositeDisposable
 import ru.imlocal.data.api.Api
 import ru.imlocal.models.Place
 
 class PlaceRepository(private val apiService: Api) {
 
-    lateinit var placeDetailsNetworkDataSource: PlaceDetailsNetworkDataSource
+    lateinit var placeDetailsNetworkDataSource: DetailsNetworkDataSource
 
     fun fetchSinglePlaceDetails(
-        compositeDisposable: CompositeDisposable,
         placeId: Int
     ): LiveData<Place> {
         placeDetailsNetworkDataSource =
-            PlaceDetailsNetworkDataSource(apiService, compositeDisposable)
+            DetailsNetworkDataSource(apiService)
         placeDetailsNetworkDataSource.fetchPlace(placeId)
 
         return placeDetailsNetworkDataSource.downloadedPlaceDetailsResponse

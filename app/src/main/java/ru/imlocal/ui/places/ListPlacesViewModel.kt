@@ -14,7 +14,7 @@ class ListPlacesViewModel(private val placeRepository: PlacePagedListRepository)
     }
 
     val networkState: LiveData<NetworkState> by lazy {
-        placeRepository.getNetworkState()
+        placeRepository.getNetworkState("placeDataSource")
     }
 
     fun listIsEmpty(): Boolean {
