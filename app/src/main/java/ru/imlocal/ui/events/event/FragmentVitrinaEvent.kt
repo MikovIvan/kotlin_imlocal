@@ -1,20 +1,31 @@
 package ru.imlocal.ui.events.event
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.fragment_vitrina_event.*
 import ru.imlocal.R
+import ru.imlocal.data.api.Api
+import ru.imlocal.data.api.BASE_IMAGE_URL
+import ru.imlocal.data.api.EVENT_IMAGE_DIRECTION
+import ru.imlocal.data.repository.EventRepository
+import ru.imlocal.data.repository.NetworkState
+import ru.imlocal.models.Event
 
 class FragmentVitrinaEvent : Fragment() {
 
-    companion object {
-        fun newInstance() = FragmentVitrinaEvent()
-    }
-
     private lateinit var viewModel: VitrinaEventViewModel
+    private lateinit var eventRepository: EventRepository
+    private val args: FragmentVitrinaEventArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,10 +34,59 @@ class FragmentVitrinaEvent : Fragment() {
         return inflater.inflate(R.layout.fragment_vitrina_event, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(VitrinaEventViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val apiService: Api = Api.getClient()
+        eventRepository = EventRepository(apiService)
+
+        viewModel = getViewModel(args.eventId)
+
+        viewModel.actionDetails.observe(this, Observer {
+            bindUI(it)
+        })
+
+        viewModel.networkState.observe(this, Observer {
+            progress_bar_vitrina_event.visibility =
+                if (it == NetworkState.LOADING) View.VISIBLE else View.GONE
+            txt_error_vitrina_event.visibility =
+                if (it == NetworkState.ERROR) View.VISIBLE else View.GONE
+        })
+    }
+
+    private fun bindUI(event: Event) {
+        Glide.with(context as Context)
+            .load(BASE_IMAGE_URL + EVENT_IMAGE_DIRECTION + event.eventPhotos.get(0).eventPhoto)
+            .into(iv_vitrina)
+
+        tv_vitrina_name_of_event.text = event.title
+        tv_adress.text = event.address
+        when (event.eventTypeId) {
+            1 -> tv_event_type.text = "Еда"
+            2 -> tv_event_type.text = "Дети"
+            3 -> tv_event_type.text = "Спорт"
+            4 -> tv_event_type.text = "Город"
+            5 -> tv_event_type.text = "Ярмарка"
+            6 -> tv_event_type.text = "Творчество"
+            7 -> tv_event_type.text = "Театр"
+            8 -> tv_event_type.text = "Шоу"
+        }
+
+        tv_price.text = event.price
+        tv_when.text = event.begin + "-" + event.end
+        tv_about_event_text.text = event.description
+    }
+
+    private fun getViewModel(actionId: Int): VitrinaEventViewModel {
+        return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return VitrinaEventViewModel(
+                    eventRepository,
+                    actionId
+                ) as T
+            }
+        })[VitrinaEventViewModel::class.java]
     }
 
 }

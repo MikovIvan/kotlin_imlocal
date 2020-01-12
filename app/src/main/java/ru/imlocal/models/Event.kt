@@ -15,6 +15,6 @@ data class Event(
     @SerializedName("happeningTypeId")
     val eventTypeId: Int,
     @SerializedName("happeningPhotos")
-    val eventPhotoList: List<EventPhoto>
+    val eventPhotos: List<EventPhoto>
 ) {
 }
