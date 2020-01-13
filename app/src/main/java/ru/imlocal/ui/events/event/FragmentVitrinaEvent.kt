@@ -14,9 +14,12 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_vitrina_event.*
 import ru.imlocal.R
+import ru.imlocal.data.Constants
 import ru.imlocal.data.api.Api
 import ru.imlocal.data.api.BASE_IMAGE_URL
 import ru.imlocal.data.api.EVENT_IMAGE_DIRECTION
+import ru.imlocal.data.newDateFormat
+import ru.imlocal.data.newDateFormat2
 import ru.imlocal.data.repository.EventRepository
 import ru.imlocal.data.repository.NetworkState
 import ru.imlocal.models.Event
@@ -72,8 +75,32 @@ class FragmentVitrinaEvent : Fragment() {
             8 -> tv_event_type.text = "Шоу"
         }
 
-        tv_price.text = event.price
-        tv_when.text = event.begin + "-" + event.end
+        with(tv_price) {
+            text = when (event.price) {
+                0 -> getString(R.string.free)
+                else -> resources.getString(R.string.price, event.price, Constants.KEY_RUB)
+            }
+        }
+
+        with(tv_when) {
+            text = when {
+                event.end != null && !event.end.substring(0, 11).equals(
+                    event.begin.substring(
+                        0,
+                        11
+                    )
+                ) ->
+                    resources.getString(
+                        R.string.dates_vitrina_event,
+                        event.begin.newDateFormat(),
+                        event.end.newDateFormat2()
+                    )
+                else -> resources.getString(
+                    R.string.date_vitrina_event,
+                    event.begin.newDateFormat()
+                )
+            }
+        }
         tv_about_event_text.text = event.description
     }
 

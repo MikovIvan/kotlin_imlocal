@@ -71,4 +71,11 @@
     <string name="choose_pdf_file">Выберете pdf файл</string>
     <string name="cancel">Отмена</string>
     <string name="retry">retry</string>
+
+
+    <string name="price">%1$d%2$s</string>
+    <string name="free">Бесплатно</string>
+    <string name="en_free">Free</string>
+    <string name="dates_vitrina_event">%1$s - %2$s</string>
+    <string name="date_vitrina_event">%1$s</string>
 </resources>

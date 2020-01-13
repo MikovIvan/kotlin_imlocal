@@ -15,6 +15,8 @@ import kotlinx.android.synthetic.main.network_state_item.view.*
 import ru.imlocal.R
 import ru.imlocal.data.api.BASE_IMAGE_URL
 import ru.imlocal.data.api.EVENT_IMAGE_DIRECTION
+import ru.imlocal.data.newDateFormat
+import ru.imlocal.data.newDateFormat2
 import ru.imlocal.data.repository.NetworkState
 import ru.imlocal.models.Event
 import ru.imlocal.ui.main.FragmentMainDirections
@@ -72,18 +74,37 @@ class EventPagedListAdapter(val context: Context, val fragment: Fragment) :
         override fun areContentsTheSame(oldItem: Event, newItem: Event): Boolean {
             return oldItem == newItem
         }
-
     }
 
     class EventItemViewHolder(view: View, val fragment: Fragment) : RecyclerView.ViewHolder(view) {
 
         fun bind(event: Event?) {
-            when (event?.price) {
-                "0" -> itemView.tv_event_price.text = "Free"
-                else -> itemView.tv_event_price.text = event?.price
-            }
             itemView.tv_event_title.text = event?.title
-            itemView.tv_event_date.text = event?.begin + "-" + event?.end
+
+            with(itemView.tv_event_price) {
+                text = when (event?.price) {
+                    0 -> itemView.context.getString(R.string.en_free)
+                    else -> event?.price.toString()
+                }
+            }
+
+            with(itemView.tv_event_date) {
+                text = when {
+                    event?.end != null && !event.end.substring(
+                        0,
+                        11
+                    ).equals(event.begin.substring(0, 11)) ->
+                        context.getString(
+                            R.string.dates_vitrina_event,
+                            event.begin.newDateFormat(),
+                            event.end.newDateFormat2()
+                        )
+                    else -> context.getString(
+                        R.string.date_vitrina_event,
+                        event?.begin?.newDateFormat()
+                    )
+                }
+            }
 
             Glide.with(itemView.context)
                 .load(BASE_IMAGE_URL + EVENT_IMAGE_DIRECTION + event?.eventPhotos?.get(0)?.eventPhoto)

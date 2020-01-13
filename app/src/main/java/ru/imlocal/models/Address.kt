@@ -11,7 +11,7 @@ private fun String.shortStreetType(): String {
         toLowerCase(Locale.getDefault()).contains("набережная") -> replace("набережная", "наб.")
         toLowerCase(Locale.getDefault()).contains("аллея") -> replace("аллея", "ал.")
         toLowerCase(Locale.getDefault()).contains("площадь") -> replace("площадь", "пл.")
-        else -> toString()
+        else -> this
     }
 }
 
