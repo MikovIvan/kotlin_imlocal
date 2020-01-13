@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.list_item_event.view.*
 import kotlinx.android.synthetic.main.network_state_item.view.*
 import ru.imlocal.R
+import ru.imlocal.data.Constants
 import ru.imlocal.data.api.BASE_IMAGE_URL
 import ru.imlocal.data.api.EVENT_IMAGE_DIRECTION
 import ru.imlocal.data.newDateFormat
@@ -83,8 +84,8 @@ class EventPagedListAdapter(val context: Context, val fragment: Fragment) :
 
             with(itemView.tv_event_price) {
                 text = when (event?.price) {
-                    0 -> itemView.context.getString(R.string.en_free)
-                    else -> event?.price.toString()
+                    0 -> context.getString(R.string.en_free)
+                    else -> context.getString(R.string.price, event?.price, Constants.KEY_RUB)
                 }
             }
 
