@@ -90,19 +90,9 @@ class EventPagedListAdapter(val context: Context, val fragment: Fragment) :
 
             with(itemView.tv_event_date) {
                 text = when {
-                    event?.end != null && !event.end.substring(
-                        0,
-                        11
-                    ).equals(event.begin.substring(0, 11)) ->
-                        context.getString(
-                            R.string.dates_vitrina_event,
-                            event.begin.newDateFormat(),
-                            event.end.newDateFormat2()
-                        )
-                    else -> context.getString(
-                        R.string.date_vitrina_event,
-                        event?.begin?.newDateFormat()
-                    )
+                    event?.end != null && !event.end.substring(0, 11).equals(event.begin.substring(0, 11)) ->
+                        context.getString(R.string.dates_vitrina_event, event.begin.newDateFormat(), event.end.newDateFormat2())
+                    else -> context.getString(R.string.date_vitrina_event, event?.begin?.newDateFormat())
                 }
             }
 
@@ -111,10 +101,7 @@ class EventPagedListAdapter(val context: Context, val fragment: Fragment) :
                 .into(itemView.iv_event_image)
 
             itemView.setOnClickListener {
-                val action =
-                    FragmentMainDirections.actionFragmentMainToFragmentVitrinaEvent(
-                        event!!.id
-                    )
+                val action = FragmentMainDirections.actionFragmentMainToFragmentVitrinaEvent(event!!.id)
                 NavHostFragment.findNavController(fragment).navigate(action)
             }
         }

@@ -84,12 +84,7 @@ class FragmentVitrinaEvent : Fragment() {
 
         with(tv_when) {
             text = when {
-                event.end != null && !event.end.substring(0, 11).equals(
-                    event.begin.substring(
-                        0,
-                        11
-                    )
-                ) ->
+                event.end != null && !event.end.substring(0, 11).equals(event.begin.substring(0, 11)) ->
                     resources.getString(
                         R.string.dates_vitrina_event,
                         event.begin.newDateFormat(),
