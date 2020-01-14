@@ -1,13 +1,14 @@
 package ru.imlocal.ui.events.event
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import ru.imlocal.data.repository.EventRepository
 import ru.imlocal.data.repository.NetworkState
 import ru.imlocal.models.Event
 
-class VitrinaEventViewModel(private val eventRepository: EventRepository, eventId: Int) :
-    ViewModel() {
+class VitrinaEventViewModel(private val eventRepository: EventRepository, eventId: Int) : ViewModel() {
 
     val actionDetails: LiveData<Event> by lazy {
         eventRepository.fetchSingleEventDetails(eventId)
@@ -15,6 +16,14 @@ class VitrinaEventViewModel(private val eventRepository: EventRepository, eventI
 
     val networkState: LiveData<NetworkState> by lazy {
         eventRepository.getEventDetailsNetworkState()
+    }
+
+    fun addToFavorites(context: Context?, eventId: Int) {
+        Toast.makeText(context, "$eventId", Toast.LENGTH_SHORT).show()
+    }
+
+    fun share(context: Context?) {
+        Toast.makeText(context, "share", Toast.LENGTH_SHORT).show()
     }
 
 }

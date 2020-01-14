@@ -2,9 +2,7 @@ package ru.imlocal.ui.events.event
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -29,6 +27,11 @@ class FragmentVitrinaEvent : Fragment() {
     private lateinit var viewModel: VitrinaEventViewModel
     private lateinit var eventRepository: EventRepository
     private val args: FragmentVitrinaEventArgs by navArgs()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +58,19 @@ class FragmentVitrinaEvent : Fragment() {
             txt_error_vitrina_event.visibility =
                 if (it == NetworkState.ERROR) View.VISIBLE else View.GONE
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_vitrina, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.add_to_favorites -> viewModel.addToFavorites(context, args.eventId)
+            R.id.share -> viewModel.share(context)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun bindUI(event: Event) {
