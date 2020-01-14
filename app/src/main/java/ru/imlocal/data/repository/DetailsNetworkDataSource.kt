@@ -7,6 +7,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import ru.imlocal.data.api.Api
 import ru.imlocal.models.Action
+import ru.imlocal.models.Event
 import ru.imlocal.models.Place
 
 class DetailsNetworkDataSource(
@@ -25,6 +26,10 @@ class DetailsNetworkDataSource(
     val downloadedActionDetailsResponse: LiveData<Action>
         get() = _downloadedActionDetailsResponse
 
+    private val _downloadedEventDetailsResponse = MutableLiveData<Event>()
+    val downloadedEventDetailsResponse: LiveData<Event>
+        get() = _downloadedEventDetailsResponse
+
     fun fetchPlace(placeId: Int) {
         _networkState.postValue(NetworkState.LOADING)
 
@@ -34,8 +39,12 @@ class DetailsNetworkDataSource(
             }
 
             override fun onResponse(call: Call<Place>, response: Response<Place>) {
-                _downloadedPlaceDetailsResponse.postValue(response.body())
-                _networkState.postValue(NetworkState.LOADED)
+                if (response.isSuccessful) {
+                    _downloadedPlaceDetailsResponse.postValue(response.body())
+                    _networkState.postValue(NetworkState.LOADED)
+                } else {
+                    _networkState.postValue(NetworkState.ERROR)
+                }
             }
         })
     }
@@ -43,7 +52,7 @@ class DetailsNetworkDataSource(
     fun fetchAction(actionId: Int) {
         _networkState.postValue(NetworkState.LOADING)
 
-        apiService.getAction(actionId).enqueue(object : retrofit2.Callback<Action> {
+        apiService.getAction(actionId).enqueue(object : Callback<Action> {
             override fun onFailure(call: Call<Action>, t: Throwable) {
                 _networkState.postValue(NetworkState.ERROR)
             }
@@ -51,6 +60,26 @@ class DetailsNetworkDataSource(
             override fun onResponse(call: Call<Action>, response: Response<Action>) {
                 if (response.isSuccessful) {
                     _downloadedActionDetailsResponse.postValue(response.body())
+                    _networkState.postValue(NetworkState.LOADED)
+                } else {
+                    _networkState.postValue(NetworkState.ERROR)
+                }
+            }
+
+        })
+    }
+
+    fun fetchEvent(eventId: Int) {
+        _networkState.postValue(NetworkState.LOADING)
+
+        apiService.getEvent(eventId).enqueue(object : Callback<Event> {
+            override fun onFailure(call: Call<Event>, t: Throwable) {
+                _networkState.postValue(NetworkState.ERROR)
+            }
+
+            override fun onResponse(call: Call<Event>, response: Response<Event>) {
+                if (response.isSuccessful) {
+                    _downloadedEventDetailsResponse.postValue(response.body())
                     _networkState.postValue(NetworkState.LOADED)
                 } else {
                     _networkState.postValue(NetworkState.ERROR)

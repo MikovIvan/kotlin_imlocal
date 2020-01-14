@@ -49,6 +49,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.fragment_vitrina_place -> {
                     setToolbar(false)
                 }
+                R.id.fragment_vitrina_event -> {
+                    setToolbar(false)
+                }
                 R.id.fragment_main -> {
                     setToolbar(true)
                     activity_main_appbar.visibility = View.VISIBLE

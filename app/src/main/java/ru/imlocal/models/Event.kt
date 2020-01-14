@@ -9,12 +9,12 @@ data class Event(
     val title: String,
     val description: String,
     val address: String,
-    val price: String,
+    val price: Int,
     val begin: String,
-    val end: String,
+    val end: String?,
     @SerializedName("happeningTypeId")
     val eventTypeId: Int,
     @SerializedName("happeningPhotos")
-    val eventPhotoList: List<EventPhoto>
+    val eventPhotos: List<EventPhoto>
 ) {
 }

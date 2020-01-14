@@ -10,12 +10,14 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.imlocal.models.Action
+import ru.imlocal.models.Event
 import ru.imlocal.models.Place
 
 const val BASE_URL = "https://atolserver.xyz/api/"
 const val BASE_IMAGE_URL = "https://atolserver.xyz/img/"
 const val SHOP_IMAGE_DIRECTION = "shopPhoto/";
 const val ACTION_IMAGE_DIRECTION = "eventPhoto/";
+const val EVENT_IMAGE_DIRECTION = "happeningPhoto/";
 
 const val FIRST_PAGE = 1
 const val PER_PAGE = 10
@@ -45,6 +47,17 @@ interface Api {
         @Query("page") page: Int,
         @Query("per-page") perPage: Int
     ): Call<List<Action>>
+
+    @GET("happenings")
+    fun getAllEvents(
+        @Query("page") page: Int,
+        @Query("per-page") perPage: Int
+    ): Call<List<Event>>
+
+    @GET("happenings/{id}")
+    fun getEvent(
+        @Path("id") id: Int
+    ): Call<Event>
 
     companion object ApiClient {
         fun getClient(): Api {
