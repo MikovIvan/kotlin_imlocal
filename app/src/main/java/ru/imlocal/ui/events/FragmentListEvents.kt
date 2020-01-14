@@ -1,6 +1,5 @@
 package ru.imlocal.ui.events
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +9,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_list_places.*
+import kotlinx.android.synthetic.main.fragment_list_events.*
+import kotlinx.android.synthetic.main.fragment_list_places.progress_bar_list_places
+import kotlinx.android.synthetic.main.fragment_list_places.txt_error_list_places
 import ru.imlocal.R
 import ru.imlocal.adapter.EventPagedListAdapter
 import ru.imlocal.data.api.Api
 import ru.imlocal.data.repository.NetworkState
 import ru.imlocal.data.repository.PlacePagedListRepository
+import ru.imlocal.ui.main.FragmentMainDirections
 
 class FragmentListEvents : Fragment() {
 
@@ -43,10 +45,14 @@ class FragmentListEvents : Fragment() {
 
         viewModel = getViewModel()
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.rv_fragment_list_events)
-        val eventAdapter = EventPagedListAdapter(activity as Context, this)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = eventAdapter
+        val eventAdapter = EventPagedListAdapter {
+            val action = FragmentMainDirections.actionFragmentMainToFragmentVitrinaEvent(it.id)
+            NavHostFragment.findNavController(this).navigate(action)
+        }
+        with(rv_fragment_list_events) {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = eventAdapter
+        }
 
         viewModel.eventPagedList.observe(this, Observer {
             eventAdapter.submitList(it)

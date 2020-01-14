@@ -1,11 +1,8 @@
 package ru.imlocal.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -20,9 +17,8 @@ import ru.imlocal.data.newDateFormat
 import ru.imlocal.data.newDateFormat2
 import ru.imlocal.data.repository.NetworkState
 import ru.imlocal.models.Event
-import ru.imlocal.ui.main.FragmentMainDirections
 
-class EventPagedListAdapter(val context: Context, val fragment: Fragment) :
+class EventPagedListAdapter(private val listener: (Event) -> Unit) :
     PagedListAdapter<Event, RecyclerView.ViewHolder>(EventDiffCallBack()) {
 
     val EVENT_VIEW_TYPE = 1
@@ -36,7 +32,7 @@ class EventPagedListAdapter(val context: Context, val fragment: Fragment) :
 
         if (viewType == EVENT_VIEW_TYPE) {
             view = layoutInflater.inflate(R.layout.list_item_event, parent, false)
-            return EventItemViewHolder(view, fragment)
+            return EventItemViewHolder(view)
         } else {
             view = layoutInflater.inflate(R.layout.network_state_item, parent, false)
             return NetworkStateItemViewHolder(view)
@@ -45,7 +41,7 @@ class EventPagedListAdapter(val context: Context, val fragment: Fragment) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == EVENT_VIEW_TYPE) {
-            (holder as EventItemViewHolder).bind(getItem(position))
+            (holder as EventItemViewHolder).bind(getItem(position), listener)
         } else {
             (holder as NetworkStateItemViewHolder).bind(networkState)
         }
@@ -77,9 +73,9 @@ class EventPagedListAdapter(val context: Context, val fragment: Fragment) :
         }
     }
 
-    class EventItemViewHolder(view: View, val fragment: Fragment) : RecyclerView.ViewHolder(view) {
+    class EventItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(event: Event?) {
+        fun bind(event: Event?, listener: (Event) -> Unit) {
             itemView.tv_event_title.text = event?.title
 
             with(itemView.tv_event_price) {
@@ -102,8 +98,7 @@ class EventPagedListAdapter(val context: Context, val fragment: Fragment) :
                 .into(itemView.iv_event_image)
 
             itemView.setOnClickListener {
-                val action = FragmentMainDirections.actionFragmentMainToFragmentVitrinaEvent(event!!.id)
-                NavHostFragment.findNavController(fragment).navigate(action)
+                listener(event!!)
             }
         }
     }
