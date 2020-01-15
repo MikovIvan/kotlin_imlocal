@@ -78,4 +78,7 @@
     <string name="en_free">Free</string>
     <string name="dates_vitrina_event">%1$s - %2$s</string>
     <string name="date_vitrina_event">%1$s</string>
+    <string name="search_title">Поиск</string>
+    <string name="search_place">Введите название места</string>
+    <string name="search_sort">Сортировка</string>
 </resources>

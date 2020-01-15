@@ -1,9 +1,7 @@
 package ru.imlocal.ui.places.place
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -39,6 +37,19 @@ class FragmentVitrinaPlace : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_vitrina_shop, container, false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_vitrina, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.add_to_favorites -> viewModel.addToFavorites(context, args.placeId)
+            R.id.share -> viewModel.share(context)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -83,12 +94,14 @@ class FragmentVitrinaPlace : Fragment() {
         Glide.with(this)
             .load(BASE_IMAGE_URL + SHOP_IMAGE_DIRECTION + photo)
             .into(imageView)
-        flipper_vitrina_shop.addView(imageView)
-        flipper_vitrina_shop.flipInterval = 2000
-        flipper_vitrina_shop.setInAnimation(activity, android.R.anim.slide_in_left)
-        flipper_vitrina_shop.setOutAnimation(activity, android.R.anim.slide_out_right)
-        if (autostart) {
-            flipper_vitrina_shop.startFlipping()
+        with(flipper_vitrina_shop) {
+            addView(imageView)
+            flipInterval = 2000
+            setInAnimation(activity, android.R.anim.slide_in_left)
+            setOutAnimation(activity, android.R.anim.slide_out_right)
+            if (autostart) {
+                startFlipping()
+            }
         }
     }
 
