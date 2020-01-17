@@ -2,6 +2,7 @@ package ru.imlocal.ui.places
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -12,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_list_places.*
+import kotlinx.android.synthetic.main.layout_sort_submenu.*
 import ru.imlocal.R
 import ru.imlocal.adapter.PlacePagedListAdapter
 import ru.imlocal.data.api.Api
@@ -60,9 +62,6 @@ class FragmentListPlaces : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        viewModel.observeState(this) {
-            renderUI(it, item)
-        }
         when (item.itemId) {
             R.id.sort -> viewModel.handleSortMenu()
         }
@@ -77,6 +76,7 @@ class FragmentListPlaces : Fragment() {
 
         viewModel = getViewModel()
 
+        setupSortMenu()
         val placeAdapter = PlacePagedListAdapter {
             val action = FragmentMainDirections.actionFragmentMainToFragmentVitrinaPlace(
                 it.shopId
@@ -104,11 +104,30 @@ class FragmentListPlaces : Fragment() {
                 placeAdapter.setNetworkState(it)
             }
         })
+
+        viewModel.observeState(this) {
+            renderUI(it)
+        }
+
     }
 
-    private fun renderUI(state: State, item: MenuItem) {
-        item.isChecked = state.isSortOpen
-        if (state.isSortOpen) sort_sub_menu_places.open() else sort_sub_menu_places.close()
+    private fun renderUI(state: State) {
+        if (state.isSortMenuShow) sort_sub_menu_places.open() else sort_sub_menu_places.close()
+
+        switch_mode_sort_by_rating.isChecked = state.isSortByRating
+        switch_mode_sort_by_distance.isChecked = state.isSortByDistance
+
+    }
+
+    private fun setupSortMenu() {
+        switch_mode_sort_by_rating.setOnClickListener {
+            viewModel.sortByRating()
+            Toast.makeText(activity, "tv_sort_by_rating click", Toast.LENGTH_SHORT).show()
+        }
+        switch_mode_sort_by_distance.setOnClickListener {
+            viewModel.sortByDistance()
+            Toast.makeText(context, "tv_sort_by_distance click", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun getViewModel(): ListPlacesViewModel {

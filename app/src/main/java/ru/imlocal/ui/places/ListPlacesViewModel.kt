@@ -35,7 +35,17 @@ class ListPlacesViewModel(private val placeRepository: PlacePagedListRepository)
     }
 
     fun handleSortMenu() {
-        updateState { it.copy(isSortOpen = !it.isSortOpen) }
+        updateState { it.copy(isSortMenuShow = !it.isSortMenuShow) }
+    }
+
+    fun sortByRating() {
+        updateState { it.copy(isSortByRating = !it.isSortByRating) }
+        //repository.sortByRating
+    }
+
+    fun sortByDistance() {
+        updateState { it.copy(isSortByDistance = !it.isSortByDistance) }
+        //repository.sortByDistane
     }
 
     fun updateState(update: (currentState: State) -> State) {
@@ -49,5 +59,7 @@ class ListPlacesViewModel(private val placeRepository: PlacePagedListRepository)
 }
 
 data class State(
-    val isSortOpen: Boolean = false
+    val isSortMenuShow: Boolean = false,
+    val isSortByRating: Boolean = false,
+    val isSortByDistance: Boolean = true
 )
