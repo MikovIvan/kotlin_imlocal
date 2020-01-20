@@ -24,7 +24,7 @@ class SortSubMenu @JvmOverloads constructor(
     private var centerY: Float = context.dpToPx(96)
 
     init {
-        View.inflate(context, R.layout.layout_sort_submenu, this)
+        View.inflate(context, R.layout.sort_menu, this)
         //add material bg for handle elevation and color surface
         val materialBg = MaterialShapeDrawable.createWithElevationOverlay(context)
         materialBg.elevation = elevation
@@ -34,13 +34,15 @@ class SortSubMenu @JvmOverloads constructor(
     fun open() {
         if (isOpen || !isAttachedToWindow) return
         isOpen = true
-        animatedShow()
+        visibility = View.VISIBLE
+//        animatedShow()
     }
 
     fun close() {
         if (!isOpen || !isAttachedToWindow) return
         isOpen = false
-        animatedHide()
+        visibility = View.GONE
+//        animatedHide()
     }
 
     private fun animatedShow() {

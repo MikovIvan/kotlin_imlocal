@@ -11,10 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_list_places.*
-import kotlinx.android.synthetic.main.layout_sort_submenu.*
+import kotlinx.android.synthetic.main.sort_menu.*
 import ru.imlocal.R
+import ru.imlocal.adapter.CategoryAdapter
 import ru.imlocal.adapter.PlacePagedListAdapter
 import ru.imlocal.data.api.Api
 import ru.imlocal.data.repository.NetworkState
@@ -76,7 +78,6 @@ class FragmentListPlaces : Fragment() {
 
         viewModel = getViewModel()
 
-        setupSortMenu()
         val placeAdapter = PlacePagedListAdapter {
             val action = FragmentMainDirections.actionFragmentMainToFragmentVitrinaPlace(
                 it.shopId
@@ -109,24 +110,42 @@ class FragmentListPlaces : Fragment() {
             renderUI(it)
         }
 
+        setupSortMenu()
     }
 
     private fun renderUI(state: State) {
         if (state.isSortMenuShow) sort_sub_menu_places.open() else sort_sub_menu_places.close()
 
-        switch_mode_sort_by_rating.isChecked = state.isSortByRating
-        switch_mode_sort_by_distance.isChecked = state.isSortByDistance
+        btn_sort_by_rating.isChecked = state.isSortByRating
+        btn_sort_by_distance.isChecked = state.isSortByDistance
+
+//        btn_toggle_group.addOnButtonCheckedListener { group, checkedId, isChecked ->
+//            when (checkedId) {
+//                0 -> viewModel.sortByRating()
+//                1 -> viewModel.sortByDistance()
+//            }
+//        }
 
     }
 
     private fun setupSortMenu() {
-        switch_mode_sort_by_rating.setOnClickListener {
+        btn_sort_by_rating.setOnClickListener {
             viewModel.sortByRating()
+            viewModel.handleSortMenu()
             Toast.makeText(activity, "tv_sort_by_rating click", Toast.LENGTH_SHORT).show()
         }
-        switch_mode_sort_by_distance.setOnClickListener {
+        btn_sort_by_distance.setOnClickListener {
             viewModel.sortByDistance()
+            viewModel.handleSortMenu()
             Toast.makeText(context, "tv_sort_by_distance click", Toast.LENGTH_SHORT).show()
+        }
+
+        with(rv_category) {
+            layoutManager = GridLayoutManager(activity, 3)
+            adapter = CategoryAdapter("place") {
+                Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
+                viewModel.handleSortMenu()
+            }
         }
     }
 
