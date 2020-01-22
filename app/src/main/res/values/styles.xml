@@ -1,11 +1,21 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:statusBarColor">@color/color_text</item>
+
+        <item name="colorPrimary">@color/color_main</item>
+        <item name="colorPrimaryVariant">@color/color_text</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorSecondary">@color/color_main</item>
+        <item name="colorSecondaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorOnSecondary">@android:color/white</item>
+        <item name="colorError">#F44336</item>
+        <item name="colorOnError">#FFFFFF</item>
+        <item name="colorSurface">@color/color_background</item>
+        <item name="colorOnSurface">@color/color_text</item>
     </style>
 
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
@@ -14,7 +24,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="AppTheme.Toolbar" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.Toolbar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:textColorPrimary">@color/color_main</item>
         <item name="android:textColorSecondary">@color/color_main</item>
 
@@ -24,6 +34,13 @@
 
     <style name="NavDrawerTextStyle" parent="Base.TextAppearance.AppCompat">
         <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="ArticleBarsTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="colorPrimary">@color/color_text</item>
+        <item name="colorOnPrimary">@color/color_hint</item>
+        <item name="colorSurface">@color/color_background</item>
+        <item name="colorControlNormal">@color/color_hint</item>
     </style>
 
 </resources>

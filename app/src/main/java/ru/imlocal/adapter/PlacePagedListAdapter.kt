@@ -1,11 +1,8 @@
 package ru.imlocal.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -17,9 +14,8 @@ import ru.imlocal.data.api.BASE_IMAGE_URL
 import ru.imlocal.data.api.SHOP_IMAGE_DIRECTION
 import ru.imlocal.data.repository.NetworkState
 import ru.imlocal.models.Place
-import ru.imlocal.ui.main.FragmentMainDirections
 
-class PlacePagedListAdapter(val context: Context, val fragment: Fragment) :
+class PlacePagedListAdapter(private val listener: (Place) -> Unit) :
     PagedListAdapter<Place, RecyclerView.ViewHolder>(PlaceDiffCallBack()) {
 
     val PLACE_VIEW_TYPE = 1
@@ -33,7 +29,7 @@ class PlacePagedListAdapter(val context: Context, val fragment: Fragment) :
 
         if (viewType == PLACE_VIEW_TYPE) {
             view = layoutInflater.inflate(R.layout.list_item_shop, parent, false)
-            return PlaceItemViewHolder(view, fragment)
+            return PlaceItemViewHolder(view)
         } else {
             view = layoutInflater.inflate(R.layout.network_state_item, parent, false)
             return NetworkStateItemViewHolder(view)
@@ -42,7 +38,7 @@ class PlacePagedListAdapter(val context: Context, val fragment: Fragment) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == PLACE_VIEW_TYPE) {
-            (holder as PlaceItemViewHolder).bind(getItem(position))
+            (holder as PlaceItemViewHolder).bind(getItem(position), listener)
         } else {
             (holder as NetworkStateItemViewHolder).bind(networkState)
         }
@@ -75,9 +71,9 @@ class PlacePagedListAdapter(val context: Context, val fragment: Fragment) :
 
     }
 
-    class PlaceItemViewHolder(view: View, val fragment: Fragment) : RecyclerView.ViewHolder(view) {
+    class PlaceItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(place: Place?) {
+        fun bind(place: Place?, listener: (Place) -> Unit) {
             itemView.tv_title.text = place?.shopShortName
             itemView.tv_description.text = place?.shopShortDescription
             itemView.tv_rating.text = place?.shopAvgRating.toString()
@@ -87,11 +83,7 @@ class PlacePagedListAdapter(val context: Context, val fragment: Fragment) :
                 .into(itemView.iv_shopimage)
 
             itemView.setOnClickListener {
-                val action =
-                    FragmentMainDirections.actionFragmentMainToFragmentVitrinaPlace(
-                        place!!.shopId
-                    )
-                findNavController(fragment).navigate(action)
+                listener(place!!)
             }
         }
     }
@@ -125,15 +117,14 @@ class PlacePagedListAdapter(val context: Context, val fragment: Fragment) :
         val hasExtraRow = hasExtraRow()
 
         if (hadExtraRow != hasExtraRow) {
-            if (hadExtraRow) {                             //hadExtraRow is true and hasExtraRow false
-                notifyItemRemoved(super.getItemCount())    //remove the progressbar at the end
-            } else {                                       //hasExtraRow is true and hadExtraRow false
-                notifyItemInserted(super.getItemCount())   //add the progressbar at the end
+            if (hadExtraRow) {
+                notifyItemRemoved(super.getItemCount())
+            } else {
+                notifyItemInserted(super.getItemCount())
             }
-        } else if (hasExtraRow && previousState != newNetworkState) { //hasExtraRow is true and hadExtraRow true and (NetworkState.ERROR or NetworkState.ENDOFLIST)
-            notifyItemChanged(itemCount - 1)       //add the network message at the end
+        } else if (hasExtraRow && previousState != newNetworkState) {
+            notifyItemChanged(itemCount - 1)
         }
-
     }
 
 }
