@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_login"
+        android:id="@+id/fragment_login"
         android:icon="@drawable/ic_avatar"
         android:title="@string/menu_item_drawer_login" />
     <item
         android:id="@+id/fragment_favorites"
         android:icon="@drawable/ic_favorites"
-        android:title="@string/menu_item_drawer_favorites" />
+        android:title="@string/menu_item_drawer_favorites"
+        android:visible="false" />
     <item
         android:id="@+id/fragment_feedback"
         android:icon="@drawable/ic_help"
@@ -19,5 +20,6 @@
     <item
         android:id="@+id/nav_logout"
         android:icon="@drawable/ic_exit"
-        android:title="@string/menu_item_drawer_logout" />
+        android:title="@string/menu_item_drawer_logout"
+        android:visible="false" />
 </menu>

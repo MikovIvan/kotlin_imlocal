@@ -1,6 +1,7 @@
 package ru.imlocal.ui
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,9 +9,16 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.imlocal.extensions.getUser
+import ru.imlocal.models.User
 
 class MainViewModel(val app: Application) : AndroidViewModel(app) {
 
+    fun getCurrentUser(context: Context): MutableLiveData<User> {
+        val user: MutableLiveData<User> = MutableLiveData(User())
+        user.postValue(getUser(context))
+        return user
+    }
 
     fun syncDataIfNeed(): LiveData<LoadResult<Boolean>> {
         val result: MutableLiveData<LoadResult<Boolean>> =
