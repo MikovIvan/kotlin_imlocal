@@ -6,12 +6,11 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 import ru.imlocal.models.Action
 import ru.imlocal.models.Event
 import ru.imlocal.models.Place
+import ru.imlocal.models.User
 
 const val BASE_URL = "https://atolserver.xyz/api/"
 const val BASE_IMAGE_URL = "https://atolserver.xyz/img/"
@@ -58,6 +57,18 @@ interface Api {
     fun getEvent(
         @Path("id") id: Int
     ): Call<Event>
+
+    @Headers("Content-Type: application/json; charset=utf-8")
+    @POST("user/register")
+    fun registerUser(
+        @Body user: User
+    ): Call<User>
+
+    @Headers("Content-Type: application/json; charset=utf-8")
+    @POST("user/login")
+    fun loginUser(
+        @Body user: User
+    ): Call<User>
 
     companion object ApiClient {
         fun getClient(): Api {

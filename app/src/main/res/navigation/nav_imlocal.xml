@@ -107,4 +107,14 @@
             android:defaultValue="1"
             app:argType="integer" />
     </fragment>
+
+    <fragment
+        android:id="@+id/fragment_login"
+        android:name="ru.imlocal.ui.login.FragmentLogin"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/fragment_profile"
+        android:name="ru.imlocal.ui.profile.FragmentProfile"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
