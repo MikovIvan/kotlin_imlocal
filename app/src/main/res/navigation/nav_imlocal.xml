@@ -84,7 +84,6 @@
     <fragment
         android:id="@+id/fragment_feedback"
         android:name="ru.imlocal.ui.feedback.FragmentFeedback"
-        android:label="fragment_feedback"
         tools:layout="@layout/fragment_feedback" />
     <fragment
         android:id="@+id/fragment_map"
