@@ -52,12 +52,7 @@ class FragmentMain : Fragment() {
     private fun setUpLeftRightViewColor(position: Int = 0) {
         when (position) {
             0 -> {
-                fragment_main_v_left.setBackgroundColor(
-                    getColor(
-                        context!!,
-                        R.color.color_background_tab_button
-                    )
-                )
+                fragment_main_v_left.setBackgroundColor(getColor(context!!, R.color.color_background_tab_button))
                 fragment_main_v_right.setBackgroundColor(getColor(context!!, R.color.color_main))
             }
             1 -> {
@@ -66,12 +61,7 @@ class FragmentMain : Fragment() {
             }
             2 -> {
                 fragment_main_v_left.setBackgroundColor(getColor(context!!, R.color.color_main))
-                fragment_main_v_right.setBackgroundColor(
-                    getColor(
-                        context!!,
-                        R.color.color_background_tab_button
-                    )
-                )
+                fragment_main_v_right.setBackgroundColor(getColor(context!!, R.color.color_background_tab_button))
             }
         }
     }
