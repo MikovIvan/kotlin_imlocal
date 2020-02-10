@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         if (VKSdk.isLoggedIn()) {
-            enter.title = getUser(this)?.username
+            enter.title = getUser(this).username
             favorites.isVisible = true
             logout.isVisible = true
         }
@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
                 drawer_layout.closeDrawer(GravityCompat.START)
                 when (item.itemId) {
                     R.id.fragment_login -> {
-                        if (getUser(this@MainActivity) != null && getUser(this@MainActivity)?.isLogin!!) {
+                        if (getUser(this@MainActivity).isLogin) {
                             navController.navigate(R.id.fragment_profile)
                         } else {
                             navController.navigate(R.id.fragment_login)

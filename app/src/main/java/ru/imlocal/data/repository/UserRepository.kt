@@ -6,6 +6,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.imlocal.data.api.Api
+import ru.imlocal.extensions.saveUser
 import ru.imlocal.models.User
 
 class UserRepository(
@@ -24,7 +25,7 @@ class UserRepository(
                     if (response.body()?.middleName != null) {
                         userLogin.middleName = response.body()?.middleName ?: ""
                         userLogin.id = response.body()!!.id
-                        ru.imlocal.extensions.saveUser(userLogin, context)
+                        saveUser(userLogin, context)
                     }
                 } else {
                     apiService.registerUser(user).enqueue(object : Callback<User> {
@@ -34,7 +35,7 @@ class UserRepository(
 
                         override fun onResponse(call: Call<User>, response: Response<User>) {
                             userLogin.id = response.body()!!.id
-                            ru.imlocal.extensions.saveUser(userLogin, context)
+                            saveUser(userLogin, context)
                         }
                     })
                 }

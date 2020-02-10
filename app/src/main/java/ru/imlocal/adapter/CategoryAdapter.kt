@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_item_category.view.*
 import ru.imlocal.R
 
-class CategoryAdapter(category: String, private val listener: (String) -> Unit) : RecyclerView.Adapter<CategoryHolder>() {
+class CategoryAdapter(
+    category: String,
+    private val listener: (String) -> Unit
+) : RecyclerView.Adapter<CategoryAdapter.CategoryHolder>() {
 
     var data: List<String> = when (category) {
         "place", "action" -> listOf("Еда", "Дети", "Спорт", "Красота", "Покупки", "Все")
@@ -23,16 +26,18 @@ class CategoryAdapter(category: String, private val listener: (String) -> Unit) 
     override fun onBindViewHolder(holder: CategoryHolder, position: Int) {
         holder.bind(data, position, listener)
     }
-}
 
-class CategoryHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class CategoryHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    fun bind(data: List<String>, position: Int, listener: (String) -> Unit) {
-        val category: String = data.get(position)
-        itemView.tv_category.text = category
+        fun bind(data: List<String>, position: Int, listener: (String) -> Unit) {
+            val category: String = data.get(position)
+            itemView.tv_category.text = category
 
-        itemView.setOnClickListener {
-            listener(category)
+            itemView.setOnClickListener {
+                listener(category)
+            }
         }
     }
 }
+
+
