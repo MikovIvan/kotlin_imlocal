@@ -1,13 +1,14 @@
 package ru.imlocal.extensions
 
 import android.content.Context
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
+
 import com.google.gson.Gson
 import ru.imlocal.models.User
 
 const val USER = "user"
 
-fun saveUser(user: User?, context: Context?) {
+fun saveUser(user: User, context: Context?) {
     val prefs = PreferenceManager.getDefaultSharedPreferences(context)
     val prefsEditor = prefs.edit()
     val gson = Gson()
@@ -16,7 +17,7 @@ fun saveUser(user: User?, context: Context?) {
     prefsEditor.apply()
 }
 
-fun getUser(context: Context?): User? {
+fun getUser(context: Context): User {
     val prefs = PreferenceManager.getDefaultSharedPreferences(context)
     val gson = Gson()
     val json = prefs.getString(USER, "")
