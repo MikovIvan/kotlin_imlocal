@@ -1,6 +1,7 @@
 package ru.imlocal.data.api
 
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -25,7 +26,7 @@ interface Api {
 
     @GET("shop")
     fun getAllShops(
-        @Query("userPoint") point: String?,
+        @Query("userPoint") point: String,
         @Query("range") range: Int,
         @Query("page") page: Int,
         @Query("per-page") perPage: Int
@@ -69,6 +70,24 @@ interface Api {
     fun loginUser(
         @Body user: User
     ): Call<User>
+
+    @Headers("Content-Type: application/json; charset=utf-8")
+    @GET("users/{id}")
+    suspend fun getFavorites(
+        @Header("Authorization") credentials: String,
+        @Path("id") id: String,
+        @Query("expand") expand: String
+    ): User
+
+    @FormUrlEncoded
+    @POST("user/favorite")
+    suspend fun removeFavorites(
+        @Header("Authorization") credentials: String,
+        @Field("kind") kind: String,
+        @Field("source_id") sourceId: Int,
+        @Field("user_id") userId: Int,
+        @Field("delete") delete: String
+    ): ResponseBody
 
     companion object ApiClient {
         fun getClient(): Api {

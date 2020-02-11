@@ -79,8 +79,17 @@
     <fragment
         android:id="@+id/fragment_favorites"
         android:name="ru.imlocal.ui.favorites.FragmentFavorites"
-        android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_fragment_favorites_to_fragment_vitrina_place"
+            app:destination="@id/fragment_vitrina_place" />
+        <action
+            android:id="@+id/action_fragment_favorites_to_fragment_vitrina_action"
+            app:destination="@id/fragment_vitrina_action" />
+        <action
+            android:id="@+id/action_fragment_favorites_to_fragment_vitrina_event"
+            app:destination="@id/fragment_vitrina_event" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_feedback"
         android:name="ru.imlocal.ui.feedback.FragmentFeedback"

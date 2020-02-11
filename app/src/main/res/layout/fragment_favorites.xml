@@ -1,14 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.favorites.FragmentFavorites">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/color_background"
+    android:orientation="vertical">
 
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="FragmentFavorites" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_background"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_your_actions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="?attr/actionBarSize"
+                android:paddingTop="8dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="Ваши акции"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:overScrollMode="never"
+                android:id="@+id/rv_list_fav_actions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_your_actions"
+                tools:listitem="@layout/favorites_action"
+                tools:showIn="@layout/favorites_action" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_show_all_actions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:padding="16dp"
+                android:textAllCaps="false"
+                android:text="Показать все мои акции"
+                android:textColor="@color/color_main"
+                android:textSize="16sp"
+                app:backgroundTint="@android:color/white"
+                app:strokeColor="@color/color_main"
+                app:strokeWidth="2dp"
+                app:cornerRadius="5dp"
+                app:layout_constraintTop_toBottomOf="@+id/rv_list_fav_actions"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+            <TextView
+                android:id="@+id/tv_yourevents"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="20dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="Ваши события"
+                app:layout_constraintStart_toStartOf="@+id/btn_show_all_actions"
+                app:layout_constraintTop_toBottomOf="@+id/btn_show_all_actions" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_list_fav_events"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_small_8"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:layout_marginEnd="@dimen/spacing_small_8"
+                android:scrollbars="none"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_yourevents"
+                tools:listitem="@layout/favorites_event"
+                tools:showIn="@layout/favorites_event" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_show_all_events"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:padding="16dp"
+                android:textAllCaps="false"
+                android:text="Показать все мои события"
+                android:textColor="@color/color_main"
+                android:textSize="16sp"
+                app:backgroundTint="@android:color/white"
+                app:strokeColor="@color/color_main"
+                app:strokeWidth="2dp"
+                app:cornerRadius="5dp"
+                app:layout_constraintTop_toBottomOf="@+id/rv_list_fav_events"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+            <TextView
+                android:id="@+id/tv_yourshops"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="20dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="Ваши места"
+                app:layout_constraintStart_toStartOf="@+id/btn_show_all_events"
+                app:layout_constraintTop_toBottomOf="@+id/btn_show_all_events" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_list_fav_places"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                android:overScrollMode="never"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_yourshops"
+                tools:listitem="@layout/list_item_shop"
+                tools:showIn="@layout/list_item_shop" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_show_all_places"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:padding="16dp"
+                android:textAllCaps="false"
+                android:text="Показать все мои места"
+                android:textColor="@color/color_main"
+                android:textSize="16sp"
+                app:backgroundTint="@android:color/white"
+                app:strokeColor="@color/color_main"
+                app:strokeWidth="2dp"
+                app:cornerRadius="5dp"
+                app:layout_constraintTop_toBottomOf="@+id/rv_list_fav_places"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+            <View
+                app:layout_constraintTop_toBottomOf="@+id/btn_show_all_places"
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
