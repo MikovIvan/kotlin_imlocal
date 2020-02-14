@@ -46,10 +46,12 @@ class FragmentVitrinaPlace : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_vitrina, menu)
-        if (!viewModel.isFavorite(args.placeId, FavType.PLACE)) {
-            menu.getItem(0).setIcon(R.drawable.ic_heart)
-        } else {
-            menu.getItem(0).setIcon(R.drawable.ic_heart_pressed)
+        if (getUser(context!!).isLogin) {
+            if (!viewModel.isFavorite(args.placeId, FavType.PLACE)) {
+                menu.getItem(0).setIcon(R.drawable.ic_heart)
+            } else {
+                menu.getItem(0).setIcon(R.drawable.ic_heart_pressed)
+            }
         }
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -57,7 +59,6 @@ class FragmentVitrinaPlace : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.add_to_favorites -> {
-//                if(user.isLogin){
                 if (getUser(context!!).isLogin) {
                     if (!viewModel.isFavorite(args.placeId, FavType.PLACE)) {
                         viewModel.addToFavorites(args.placeId, context!!, FavType.PLACE)
