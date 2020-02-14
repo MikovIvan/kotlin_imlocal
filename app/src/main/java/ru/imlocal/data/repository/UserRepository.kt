@@ -6,13 +6,16 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.imlocal.data.api.Api
-import ru.imlocal.extensions.saveUser
 import ru.imlocal.models.User
+import ru.imlocal.ui.favorites.FavoritesRepository
+import ru.imlocal.utils.saveUser
 
 class UserRepository(
-    private val apiService: Api
+    private val apiService: Api,
+    val context: Context
 ) {
     var userLogin: User = User()
+    val favoritesRepository = FavoritesRepository(apiService, context)
 
     fun userLogin(user: User, context: Context) {
         return apiService.loginUser(user).enqueue(object : Callback<User> {
@@ -26,6 +29,7 @@ class UserRepository(
                         userLogin.middleName = response.body()?.middleName ?: ""
                         userLogin.id = response.body()!!.id
                         saveUser(userLogin, context)
+                        favoritesRepository.getFavorites()
                     }
                 } else {
                     apiService.registerUser(user).enqueue(object : Callback<User> {

@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -88,6 +89,15 @@ interface Api {
         @Field("user_id") userId: Int,
         @Field("delete") delete: String
     ): ResponseBody
+
+    @FormUrlEncoded
+    @POST("user/favorite")
+    suspend fun addFavorites(
+        @Header("Authorization") credentials: String,
+        @Field("kind") kind: String,
+        @Field("source_id") sourceId: Int,
+        @Field("user_id") userId: Int
+    ): Response<User>
 
     companion object ApiClient {
         fun getClient(): Api {

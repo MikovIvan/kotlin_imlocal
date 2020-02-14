@@ -1,5 +1,6 @@
 package ru.imlocal.ui
 
+import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -9,6 +10,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -21,10 +24,13 @@ import com.google.android.material.snackbar.Snackbar
 import com.vk.sdk.VKSdk
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.imlocal.R
-import ru.imlocal.extensions.getUser
-import ru.imlocal.extensions.saveUser
+import ru.imlocal.data.api.Api
+import ru.imlocal.data.repository.UserRepository
 import ru.imlocal.extensions.setup
+import ru.imlocal.ui.favorites.FavoritesRepository
 import ru.imlocal.ui.splash.FragmentSplashDirections
+import ru.imlocal.utils.getUser
+import ru.imlocal.utils.saveUser
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,12 +38,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private lateinit var viewModel: MainViewModel
+    private lateinit var favoritesRepository: FavoritesRepository
+    private lateinit var userRepository: UserRepository
 
     override fun onStart() {
         if (VKSdk.isLoggedIn()) {
             enter.title = getUser(this).username
             favorites.isVisible = true
             logout.isVisible = true
+
+            viewModel.getFavorites()
         }
         super.onStart()
     }
@@ -46,9 +56,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        val apiService: Api = Api.getClient()
+        favoritesRepository = FavoritesRepository(apiService, this)
+        userRepository = UserRepository(apiService, this)
+        viewModel = getViewModel()
+        
         viewModel.getCurrentUser(this).observe(this, Observer {
-            if (it != null) {
+            if (it.id != -1) {
                 if (it.isLogin) {
                     enter.title = it.username
                     favorites.isVisible = true
@@ -108,11 +122,12 @@ class MainActivity : AppCompatActivity() {
                 drawer_layout.closeDrawer(GravityCompat.START)
                 when (item.itemId) {
                     R.id.fragment_login -> {
-                        if (getUser(this@MainActivity).isLogin) {
-                            navController.navigate(R.id.fragment_profile)
-                        } else {
+//                        if (getUser(this@MainActivity).isLogin) {
+//                            navController.navigate(R.id.fragment_profile)
+//                        } else {
+                        if (!VKSdk.isLoggedIn())
                             navController.navigate(R.id.fragment_login)
-                        }
+//                        }
                     }
                     R.id.fragment_favorites -> {
                         navController.navigate(R.id.fragment_favorites)
@@ -124,13 +139,15 @@ class MainActivity : AppCompatActivity() {
                         navController.navigate(R.id.fragment_feedback)
                     }
                     R.id.nav_logout -> {
+                        if (VKSdk.isLoggedIn()) {
+                            VKSdk.logout()
+                        }
                         viewModel.getCurrentUser(this@MainActivity).observe(this@MainActivity, Observer {
-                            val user = it
-                            user.isLogin = false
-                            saveUser(user, this@MainActivity)
+                            saveUser(it, this@MainActivity)
                             enter.title = getString(R.string.menu_item_drawer_login)
                             favorites.isVisible = false
                             logout.isVisible = false
+                            navController.navigate(navController.currentDestination!!.id)
                         })
                         Toast.makeText(baseContext, "LOGOuT", Toast.LENGTH_SHORT).show()
                     }
@@ -158,7 +175,7 @@ class MainActivity : AppCompatActivity() {
             fragment.onActivityResult(requestCode, resultCode, data)
         }
     }
-    
+
     private fun setToolbar(isVisible: Boolean) {
         if (isVisible) {
             supportActionBar!!.setup(this, backgroundColor = R.color.color_background, icon = "icon")
@@ -187,6 +204,19 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun getViewModel(): MainViewModel {
+        return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return MainViewModel(
+                    Application(),
+                    favoritesRepository,
+                    userRepository
+                ) as T
+            }
+        })[MainViewModel::class.java]
     }
 
     companion object {

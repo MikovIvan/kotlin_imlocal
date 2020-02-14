@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_vitrina_event.*
 import ru.imlocal.R
 import ru.imlocal.data.Constants
@@ -21,11 +22,15 @@ import ru.imlocal.data.newDateFormat2
 import ru.imlocal.data.repository.EventRepository
 import ru.imlocal.data.repository.NetworkState
 import ru.imlocal.models.Event
+import ru.imlocal.models.FavType
+import ru.imlocal.ui.favorites.FavoritesRepository
+import ru.imlocal.utils.getUser
 
 class FragmentVitrinaEvent : Fragment() {
 
     private lateinit var viewModel: VitrinaEventViewModel
     private lateinit var eventRepository: EventRepository
+    private lateinit var favoritesRepository: FavoritesRepository
     private val args: FragmentVitrinaEventArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,11 +45,43 @@ class FragmentVitrinaEvent : Fragment() {
         return inflater.inflate(R.layout.fragment_vitrina_event, container, false)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_vitrina, menu)
+        if (!viewModel.isFavorite(args.eventId, FavType.EVENT)) {
+            menu.getItem(0).setIcon(R.drawable.ic_heart)
+        } else {
+            menu.getItem(0).setIcon(R.drawable.ic_heart_pressed)
+        }
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.add_to_favorites -> {
+                //                if(user.isLogin){
+                if (getUser(context!!).isLogin) {
+                    if (!viewModel.isFavorite(args.eventId, FavType.EVENT)) {
+                        viewModel.addToFavorites(args.eventId, context!!, FavType.EVENT)
+                        item.setIcon(R.drawable.ic_heart_pressed)
+                        Snackbar.make(view!!, resources.getString(R.string.add_to_favorite), Snackbar.LENGTH_SHORT).show()
+                    } else {
+                        viewModel.deleteFromFavorites(args.eventId, context!!, FavType.EVENT)
+                        item.setIcon(R.drawable.ic_heart)
+                        Snackbar.make(view!!, resources.getString(R.string.delete_from_favorites), Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            R.id.share -> viewModel.share(context)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val apiService: Api = Api.getClient()
         eventRepository = EventRepository(apiService)
+        favoritesRepository = FavoritesRepository(apiService, context!!)
 
         viewModel = getViewModel(args.eventId)
 
@@ -58,19 +95,6 @@ class FragmentVitrinaEvent : Fragment() {
             txt_error_vitrina_event.visibility =
                 if (it == NetworkState.ERROR) View.VISIBLE else View.GONE
         })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_vitrina, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.add_to_favorites -> viewModel.addToFavorites(context, args.eventId)
-            R.id.share -> viewModel.share(context)
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun bindUI(event: Event) {
@@ -121,6 +145,7 @@ class FragmentVitrinaEvent : Fragment() {
                 @Suppress("UNCHECKED_CAST")
                 return VitrinaEventViewModel(
                     eventRepository,
+                    favoritesRepository,
                     actionId
                 ) as T
             }

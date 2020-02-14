@@ -9,7 +9,7 @@ import ru.imlocal.models.Favorites
 class FavoritesViewModel(private val favoritesRepository: FavoritesRepository) : ViewModel() {
 
     fun deleteFromFavorites(id: Int, context: Context, type: FavType) {
-        favoritesRepository.deletePlaceFromFavorites(id, context, type)
+        favoritesRepository.deleteFavFromRecyclerView(id, context, type)
     }
 
     val favoritesPlaces: LiveData<Favorites> by lazy {

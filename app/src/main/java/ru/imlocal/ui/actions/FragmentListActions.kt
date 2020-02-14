@@ -11,18 +11,25 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_list_places.*
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_list_actions.*
+import kotlinx.android.synthetic.main.fragment_list_places.progress_bar_list_places
+import kotlinx.android.synthetic.main.fragment_list_places.txt_error_list_places
 import ru.imlocal.R
 import ru.imlocal.adapter.ActionPagedListAdapter
 import ru.imlocal.data.api.Api
 import ru.imlocal.data.repository.NetworkState
 import ru.imlocal.data.repository.PlacePagedListRepository
+import ru.imlocal.models.FavType
+import ru.imlocal.ui.favorites.FavoritesRepository
+import ru.imlocal.utils.getUser
 
 class FragmentListActions : Fragment() {
 
     private lateinit var viewModel: ListActionsViewModel
     lateinit var actionRepository: PlacePagedListRepository
+    lateinit var favoritesRepository: FavoritesRepository
+    lateinit var actionAdapter: ActionPagedListAdapter
 
     companion object {
         fun newInstance() = FragmentListActions()
@@ -40,12 +47,31 @@ class FragmentListActions : Fragment() {
 
         val apiService: Api = Api.getClient()
         actionRepository = PlacePagedListRepository(apiService)
+        favoritesRepository = FavoritesRepository(apiService, context!!)
         viewModel = getViewModel()
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.rv_fragment_list_actions)
-        val actionAdapter = ActionPagedListAdapter(activity as Context, this)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = actionAdapter
+        actionAdapter = ActionPagedListAdapter(activity as Context, this, favoritesRepository,
+            listener = { action, position ->
+                viewModel.share(context)
+            },
+            listener2 = { action, btn ->
+                if (getUser(context!!).isLogin) {
+                    if (!viewModel.isFavorite(action.id, FavType.ACTION)) {
+                        viewModel.addToFavorites(action.id, context!!, FavType.ACTION)
+                        btn.setImageResource(R.drawable.ic_heart_pressed)
+                        Snackbar.make(view, resources.getString(R.string.add_to_favorite), Snackbar.LENGTH_SHORT).show()
+                    } else {
+                        viewModel.deleteFromFavorites(action.id, context!!, FavType.ACTION)
+                        btn.setImageResource(R.drawable.ic_heart)
+                        Snackbar.make(view, resources.getString(R.string.delete_from_favorites), Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+            })
+
+        with(rv_fragment_list_actions) {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = actionAdapter
+        }
 
         viewModel.actionPagedList.observe(this, Observer {
             actionAdapter.submitList(it)
@@ -67,7 +93,10 @@ class FragmentListActions : Fragment() {
         return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return ListActionsViewModel(actionRepository) as T
+                return ListActionsViewModel(
+                    actionRepository,
+                    favoritesRepository
+                ) as T
             }
         })[ListActionsViewModel::class.java]
     }
