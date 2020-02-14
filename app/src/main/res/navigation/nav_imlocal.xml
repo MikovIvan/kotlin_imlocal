@@ -19,7 +19,7 @@
         android:name="ru.imlocal.ui.places.place.FragmentVitrinaPlace">
         <argument
             android:name="placeId"
-            android:defaultValue="1"
+            android:defaultValue="0"
             app:argType="integer" />
     </fragment>
 
@@ -112,7 +112,7 @@
         tools:layout="@layout/fragment_vitrina_event">
         <argument
             android:name="eventId"
-            android:defaultValue="1"
+            android:defaultValue="0"
             app:argType="integer" />
     </fragment>
 
