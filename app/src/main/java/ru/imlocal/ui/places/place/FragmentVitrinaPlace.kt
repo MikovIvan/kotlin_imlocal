@@ -17,12 +17,12 @@ import ru.imlocal.data.api.BASE_IMAGE_URL
 import ru.imlocal.data.api.SHOP_IMAGE_DIRECTION
 import ru.imlocal.data.repository.NetworkState
 import ru.imlocal.data.repository.PlaceRepository
+import ru.imlocal.data.repository.UserRepository
 import ru.imlocal.extensions.showLoginSnackbar
 import ru.imlocal.extensions.showSnackbar
 import ru.imlocal.models.FavType
 import ru.imlocal.models.Place
 import ru.imlocal.ui.favorites.FavoritesRepository
-import ru.imlocal.utils.getUser
 
 
 class FragmentVitrinaPlace : Fragment() {
@@ -47,7 +47,7 @@ class FragmentVitrinaPlace : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_vitrina, menu)
-        if (getUser(context!!).isLogin) {
+        if (UserRepository.getUser().isLogin) {
             if (!viewModel.isFavorite(args.placeId, FavType.PLACE)) {
                 menu.getItem(0).setIcon(R.drawable.ic_heart)
             } else {
@@ -60,7 +60,7 @@ class FragmentVitrinaPlace : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.add_to_favorites -> {
-                if (getUser(context!!).isLogin) {
+                if (UserRepository.getUser().isLogin) {
                     if (!viewModel.isFavorite(args.placeId, FavType.PLACE)) {
                         viewModel.addToFavorites(args.placeId, context!!, FavType.PLACE)
                         item.setIcon(R.drawable.ic_heart_pressed)
@@ -87,7 +87,7 @@ class FragmentVitrinaPlace : Fragment() {
 
         val apiService: Api = Api.getClient()
         placeRepository = PlaceRepository(apiService)
-        favoritesRepository = FavoritesRepository(apiService, context!!)
+        favoritesRepository = FavoritesRepository(apiService)
 
         viewModel = getViewModel(args.placeId)
 

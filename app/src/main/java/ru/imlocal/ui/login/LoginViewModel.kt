@@ -19,7 +19,7 @@ import ru.imlocal.utils.ActivityNavigation
 import ru.imlocal.utils.Event
 import ru.imlocal.utils.LiveMessageEvent
 
-class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
+class LoginViewModel : ViewModel() {
     private val scope = arrayOf(VKScope.PHOTOS, VKScope.EMAIL)
     val startActivityForResultEvent = LiveMessageEvent<ActivityNavigation>()
 
@@ -50,8 +50,7 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
                         request.executeWithListener(object : VKRequestListener() {
                             override fun onComplete(response: VKResponse) {
                                 val userVK = (response.parsedModel as VKList<VKApiUserFull>)[0]
-                                userRepository.saveUser(
-                                    context,
+                                UserRepository.saveUser(
                                     userVK.id.toString(),
                                     res.email,
                                     userVK.first_name,

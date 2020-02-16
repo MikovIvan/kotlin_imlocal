@@ -20,12 +20,12 @@ import ru.imlocal.data.newDateFormat
 import ru.imlocal.data.newDateFormat2
 import ru.imlocal.data.repository.EventRepository
 import ru.imlocal.data.repository.NetworkState
+import ru.imlocal.data.repository.UserRepository
 import ru.imlocal.extensions.showLoginSnackbar
 import ru.imlocal.extensions.showSnackbar
 import ru.imlocal.models.Event
 import ru.imlocal.models.FavType
 import ru.imlocal.ui.favorites.FavoritesRepository
-import ru.imlocal.utils.getUser
 
 class FragmentVitrinaEvent : Fragment() {
 
@@ -48,7 +48,7 @@ class FragmentVitrinaEvent : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_vitrina, menu)
-        if (getUser(context!!).isLogin) {
+        if (UserRepository.getUser().isLogin) {
             if (!viewModel.isFavorite(args.eventId, FavType.EVENT)) {
                 menu.getItem(0).setIcon(R.drawable.ic_heart)
             } else {
@@ -61,7 +61,7 @@ class FragmentVitrinaEvent : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.add_to_favorites -> {
-                if (getUser(context!!).isLogin) {
+                if (UserRepository.getUser().isLogin) {
                     if (!viewModel.isFavorite(args.eventId, FavType.EVENT)) {
                         viewModel.addToFavorites(args.eventId, context!!, FavType.EVENT)
                         item.setIcon(R.drawable.ic_heart_pressed)
@@ -88,7 +88,8 @@ class FragmentVitrinaEvent : Fragment() {
 
         val apiService: Api = Api.getClient()
         eventRepository = EventRepository(apiService)
-        favoritesRepository = FavoritesRepository(apiService, context!!)
+        favoritesRepository = FavoritesRepository(apiService)
+//        favoritesRepository = FavoritesRepository(apiService, context!!)
 
         viewModel = getViewModel(args.eventId)
 

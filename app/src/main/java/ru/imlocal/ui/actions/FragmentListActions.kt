@@ -20,11 +20,11 @@ import ru.imlocal.adapter.ActionPagedListAdapter
 import ru.imlocal.data.api.Api
 import ru.imlocal.data.repository.NetworkState
 import ru.imlocal.data.repository.PlacePagedListRepository
+import ru.imlocal.data.repository.UserRepository
 import ru.imlocal.extensions.showLoginSnackbar
 import ru.imlocal.extensions.showSnackbar
 import ru.imlocal.models.FavType
 import ru.imlocal.ui.favorites.FavoritesRepository
-import ru.imlocal.utils.getUser
 
 class FragmentListActions : Fragment() {
 
@@ -49,7 +49,8 @@ class FragmentListActions : Fragment() {
 
         val apiService: Api = Api.getClient()
         actionRepository = PlacePagedListRepository(apiService)
-        favoritesRepository = FavoritesRepository(apiService, context!!)
+        favoritesRepository = FavoritesRepository(apiService)
+//        favoritesRepository = FavoritesRepository(apiService, context!!)
         viewModel = getViewModel()
 
         actionAdapter = ActionPagedListAdapter(activity as Context, this, favoritesRepository,
@@ -57,7 +58,7 @@ class FragmentListActions : Fragment() {
                 viewModel.share(context)
             },
             listener2 = { action, btn ->
-                if (getUser(context!!).isLogin) {
+                if (UserRepository.getUser().isLogin) {
                     if (!viewModel.isFavorite(action.id, FavType.ACTION)) {
                         viewModel.addToFavorites(action.id, context!!, FavType.ACTION)
                         btn.setImageResource(R.drawable.ic_heart_pressed)

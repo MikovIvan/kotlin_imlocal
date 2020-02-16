@@ -19,11 +19,11 @@ import ru.imlocal.data.api.ACTION_IMAGE_DIRECTION
 import ru.imlocal.data.api.BASE_IMAGE_URL
 import ru.imlocal.data.api.SHOP_IMAGE_DIRECTION
 import ru.imlocal.data.repository.NetworkState
+import ru.imlocal.data.repository.UserRepository
 import ru.imlocal.models.Action
 import ru.imlocal.models.FavType
 import ru.imlocal.ui.favorites.FavoritesRepository
 import ru.imlocal.ui.main.FragmentMainDirections
-import ru.imlocal.utils.getUser
 
 class ActionPagedListAdapter(
     val context: Context,
@@ -97,7 +97,8 @@ class ActionPagedListAdapter(
             listener2: (Action, btn: ImageButton) -> Unit
         ) {
             runBlocking {
-                if (getUser(context).isLogin) {
+                //                if (getUser(context).isLogin) {
+                if (UserRepository.getUser().isLogin) {
                     if (favoritesRepository.isFavorite(action!!.id, FavType.ACTION)) {
                         itemView.ib_add_to_favorites.setImageResource(R.drawable.ic_heart_pressed)
                     }
