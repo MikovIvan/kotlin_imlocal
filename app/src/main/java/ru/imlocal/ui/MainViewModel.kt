@@ -1,7 +1,6 @@
 package ru.imlocal.ui
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,18 +12,15 @@ import kotlinx.coroutines.launch
 import ru.imlocal.data.repository.UserRepository
 import ru.imlocal.models.User
 import ru.imlocal.ui.favorites.FavoritesRepository
-import ru.imlocal.utils.getUser
 
 class MainViewModel(
     val app: Application,
-    private val favoritesRepository: FavoritesRepository,
-    private val userRepository: UserRepository
+    private val favoritesRepository: FavoritesRepository
 ) : AndroidViewModel(app) {
 
-    fun getCurrentUser(context: Context): LiveData<User> {
-//        return userRepository.getCurrentUser()
+    fun getCurrentUser(): LiveData<User> {
         val user: MutableLiveData<User> = MutableLiveData(User())
-        if (VKSdk.isLoggedIn()) user.postValue(getUser(context)) else user.postValue(User())
+        if (VKSdk.isLoggedIn()) user.postValue(UserRepository.getUser()) else user.postValue(User())
         return user
     }
 

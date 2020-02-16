@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import ru.imlocal.R
-import ru.imlocal.data.api.Api
 import ru.imlocal.data.repository.UserRepository
 import ru.imlocal.ui.MainActivity.Companion.enter
 import ru.imlocal.ui.MainActivity.Companion.favorites
@@ -28,8 +27,7 @@ class FragmentLogin : Fragment(), ActivityNavigation {
         fun newInstance() = FragmentLogin()
     }
 
-    private val viewModel: LoginViewModel by activityViewModels { LoginViewModelFactory(userRepository) }
-    private lateinit var userRepository: UserRepository
+    private val viewModel: LoginViewModel by activityViewModels { LoginViewModelFactory() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,9 +38,6 @@ class FragmentLogin : Fragment(), ActivityNavigation {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val apiService: Api = Api.getClient()
-        userRepository = UserRepository(apiService, context!!)
 
         viewModel.startActivityForResultEvent.setEventReceiver(this, this)
 
@@ -57,7 +52,7 @@ class FragmentLogin : Fragment(), ActivityNavigation {
 
             if (uiModel.showSuccess != null && !uiModel.showSuccess.consumed) {
                 uiModel.showSuccess.consume()?.let {
-                    enter.title = userRepository.userLogin.username
+                    enter.title = UserRepository.userLogin.username
                     favorites.isVisible = true
                     logout.isVisible = true
 //                    nav_host.findNavController().popBackStack()
@@ -85,13 +80,10 @@ class FragmentLogin : Fragment(), ActivityNavigation {
 //        })[LoginViewModel::class.java]
 //    }
 
-    class LoginViewModelFactory(
-        private val userRepository: UserRepository
-    ) : ViewModelProvider.NewInstanceFactory() {
-
+    class LoginViewModelFactory : ViewModelProvider.NewInstanceFactory() {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return LoginViewModel(userRepository) as T
+            return LoginViewModel() as T
         }
     }
 }

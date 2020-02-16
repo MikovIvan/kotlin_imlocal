@@ -36,7 +36,7 @@ class FragmentFavorites : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val apiService: Api = Api.getClient()
-        favoritesRepository = FavoritesRepository(apiService, context!!)
+        favoritesRepository = FavoritesRepository(apiService)
         viewModel = getViewModel()
 
         viewModel.favoritesPlaces.observe(this, Observer {

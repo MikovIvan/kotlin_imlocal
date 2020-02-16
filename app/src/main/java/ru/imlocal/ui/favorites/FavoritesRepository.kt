@@ -16,11 +16,11 @@ import ru.imlocal.data.local.dao.FavPlaceDao
 import ru.imlocal.data.local.entities.FavAction
 import ru.imlocal.data.local.entities.FavEvent
 import ru.imlocal.data.local.entities.FavPlace
+import ru.imlocal.data.repository.UserRepository
 import ru.imlocal.models.FavType
 import ru.imlocal.models.Favorites
-import ru.imlocal.utils.getUser
 
-class FavoritesRepository(private val apiService: Api, val context: Context) {
+class FavoritesRepository(private val apiService: Api) {
 
     private val scope = CoroutineScope(Dispatchers.IO)
     private val favActionDao: FavActionDao = DbManager.db.favActionDao()
@@ -34,8 +34,8 @@ class FavoritesRepository(private val apiService: Api, val context: Context) {
     fun getFavorites() {
         scope.launch {
             val res = apiService.getFavorites(
-                Credentials.basic(getUser(context).accessToken, ""),
-                getUser(context).id.toString(),
+                Credentials.basic(UserRepository.getUser().accessToken, ""),
+                UserRepository.getUser().id.toString(),
                 "shopsFavorites,eventsFavorites,happeningsFavorites"
             )
             _favorites.postValue(
@@ -72,10 +72,10 @@ class FavoritesRepository(private val apiService: Api, val context: Context) {
 
         scope.launch {
             apiService.removeFavorites(
-                Credentials.basic(getUser(context).accessToken, ""),
+                Credentials.basic(UserRepository.getUser().accessToken, ""),
                 kind,
                 id,
-                getUser(context).id,
+                UserRepository.getUser().id,
                 ""
             ).run {
                 when (kind) {
@@ -97,10 +97,10 @@ class FavoritesRepository(private val apiService: Api, val context: Context) {
 
         scope.launch {
             apiService.removeFavorites(
-                Credentials.basic(getUser(context).accessToken, ""),
+                Credentials.basic(UserRepository.getUser().accessToken, ""),
                 kind,
                 id,
-                getUser(context).id,
+                UserRepository.getUser().id,
                 ""
             ).run {
                 when (kind) {
@@ -122,10 +122,10 @@ class FavoritesRepository(private val apiService: Api, val context: Context) {
 
         scope.launch {
             apiService.addFavorites(
-                Credentials.basic(getUser(context).accessToken, ""),
+                Credentials.basic(UserRepository.getUser().accessToken, ""),
                 kind,
                 id,
-                getUser(context).id
+                UserRepository.getUser().id
             ).run {
                 if (isSuccessful) {
                     when (kind) {

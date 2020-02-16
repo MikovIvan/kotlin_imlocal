@@ -29,9 +29,6 @@ import ru.imlocal.data.repository.UserRepository
 import ru.imlocal.extensions.setup
 import ru.imlocal.ui.favorites.FavoritesRepository
 import ru.imlocal.ui.splash.FragmentSplashDirections
-import ru.imlocal.utils.getUser
-import ru.imlocal.utils.saveUser
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,11 +36,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var viewModel: MainViewModel
     private lateinit var favoritesRepository: FavoritesRepository
-    private lateinit var userRepository: UserRepository
 
     override fun onStart() {
         if (VKSdk.isLoggedIn()) {
-            enter.title = getUser(this).username
+            enter.title = UserRepository.getUser().username
             favorites.isVisible = true
             logout.isVisible = true
 
@@ -57,11 +53,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val apiService: Api = Api.getClient()
-        favoritesRepository = FavoritesRepository(apiService, this)
-        userRepository = UserRepository(apiService, this)
+        favoritesRepository = FavoritesRepository(apiService)
         viewModel = getViewModel()
-        
-        viewModel.getCurrentUser(this).observe(this, Observer {
+
+        viewModel.getCurrentUser().observe(this, Observer {
             if (it.id != -1) {
                 if (it.isLogin) {
                     enter.title = it.username
@@ -142,8 +137,8 @@ class MainActivity : AppCompatActivity() {
                         if (VKSdk.isLoggedIn()) {
                             VKSdk.logout()
                         }
-                        viewModel.getCurrentUser(this@MainActivity).observe(this@MainActivity, Observer {
-                            saveUser(it, this@MainActivity)
+                        viewModel.getCurrentUser().observe(this@MainActivity, Observer {
+                            UserRepository.saveUser(it)
                             enter.title = getString(R.string.menu_item_drawer_login)
                             favorites.isVisible = false
                             logout.isVisible = false
@@ -212,8 +207,7 @@ class MainActivity : AppCompatActivity() {
                 @Suppress("UNCHECKED_CAST")
                 return MainViewModel(
                     Application(),
-                    favoritesRepository,
-                    userRepository
+                    favoritesRepository
                 ) as T
             }
         })[MainViewModel::class.java]
