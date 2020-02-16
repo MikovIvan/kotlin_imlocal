@@ -61,7 +61,7 @@ class FragmentLogin : Fragment(), ActivityNavigation {
                     favorites.isVisible = true
                     logout.isVisible = true
 //                    nav_host.findNavController().popBackStack()
-                    nav_host.findNavController().popBackStack(R.id.fragment_main, false)
+                    nav_host.findNavController().popBackStack(R.id.fragment_login, true)
                 }
             }
         })

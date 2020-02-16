@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_vitrina_event.*
 import ru.imlocal.R
 import ru.imlocal.data.Constants
@@ -21,6 +20,8 @@ import ru.imlocal.data.newDateFormat
 import ru.imlocal.data.newDateFormat2
 import ru.imlocal.data.repository.EventRepository
 import ru.imlocal.data.repository.NetworkState
+import ru.imlocal.extensions.showLoginSnackbar
+import ru.imlocal.extensions.showSnackbar
 import ru.imlocal.models.Event
 import ru.imlocal.models.FavType
 import ru.imlocal.ui.favorites.FavoritesRepository
@@ -64,12 +65,17 @@ class FragmentVitrinaEvent : Fragment() {
                     if (!viewModel.isFavorite(args.eventId, FavType.EVENT)) {
                         viewModel.addToFavorites(args.eventId, context!!, FavType.EVENT)
                         item.setIcon(R.drawable.ic_heart_pressed)
-                        Snackbar.make(view!!, resources.getString(R.string.add_to_favorite), Snackbar.LENGTH_SHORT).show()
+                        cl_vitrina_event.showSnackbar(resources.getString(R.string.add_to_favorite))
                     } else {
                         viewModel.deleteFromFavorites(args.eventId, context!!, FavType.EVENT)
                         item.setIcon(R.drawable.ic_heart)
-                        Snackbar.make(view!!, resources.getString(R.string.delete_from_favorites), Snackbar.LENGTH_SHORT).show()
+                        cl_vitrina_event.showSnackbar(resources.getString(R.string.delete_from_favorites))
                     }
+                } else {
+                    cl_vitrina_event.showLoginSnackbar(
+                        fragment = this,
+                        action = FragmentVitrinaEventDirections.actionFragmentVitrinaEventToFragmentLogin()
+                    )
                 }
             }
             R.id.share -> viewModel.share(context)

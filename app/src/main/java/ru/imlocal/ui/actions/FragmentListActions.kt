@@ -11,15 +11,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_list_actions.*
 import kotlinx.android.synthetic.main.fragment_list_places.progress_bar_list_places
 import kotlinx.android.synthetic.main.fragment_list_places.txt_error_list_places
+import kotlinx.android.synthetic.main.list_item_action.*
 import ru.imlocal.R
 import ru.imlocal.adapter.ActionPagedListAdapter
 import ru.imlocal.data.api.Api
 import ru.imlocal.data.repository.NetworkState
 import ru.imlocal.data.repository.PlacePagedListRepository
+import ru.imlocal.extensions.showLoginSnackbar
+import ru.imlocal.extensions.showSnackbar
 import ru.imlocal.models.FavType
 import ru.imlocal.ui.favorites.FavoritesRepository
 import ru.imlocal.utils.getUser
@@ -59,12 +61,17 @@ class FragmentListActions : Fragment() {
                     if (!viewModel.isFavorite(action.id, FavType.ACTION)) {
                         viewModel.addToFavorites(action.id, context!!, FavType.ACTION)
                         btn.setImageResource(R.drawable.ic_heart_pressed)
-                        Snackbar.make(view, resources.getString(R.string.add_to_favorite), Snackbar.LENGTH_SHORT).show()
+                        cl_list_item_action.showSnackbar(resources.getString(R.string.add_to_favorite))
                     } else {
                         viewModel.deleteFromFavorites(action.id, context!!, FavType.ACTION)
                         btn.setImageResource(R.drawable.ic_heart)
-                        Snackbar.make(view, resources.getString(R.string.delete_from_favorites), Snackbar.LENGTH_SHORT).show()
+                        cl_list_item_action.showSnackbar(resources.getString(R.string.delete_from_favorites))
                     }
+                } else {
+                    cl_list_item_action.showLoginSnackbar(
+                        fragment = this,
+                        action = FragmentListActionsDirections.actionFragmentListActionsToFragmentLogin()
+                    )
                 }
             })
 
