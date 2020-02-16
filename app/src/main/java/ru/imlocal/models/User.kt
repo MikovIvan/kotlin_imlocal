@@ -15,11 +15,11 @@ data class User(
     var source: String = "",
     var username: String = "",
     @SerializedName("eventsFavorites")
-    val actionsFavoritesList: List<Action> = emptyList(),
+    val actionsFavoritesList: MutableList<Action> = mutableListOf(),
     @SerializedName("shopsFavorites")
-    val placesFavoritesList: List<Place> = emptyList(),
+    val placesFavoritesList: MutableList<Place> = mutableListOf(),
     @SerializedName("happeningsFavorites")
-    val eventsFavoritesList: List<Event> = emptyList(),
+    val eventsFavoritesList: MutableList<Event> = mutableListOf(),
     @SerializedName("events")
     val actionsCreatedList: List<Action> = emptyList(),
     @SerializedName("shops")

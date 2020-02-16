@@ -29,7 +29,7 @@ class FragmentLogin : Fragment(), ActivityNavigation {
     }
 
     private val viewModel: LoginViewModel by activityViewModels { LoginViewModelFactory(userRepository) }
-    lateinit var userRepository: UserRepository
+    private lateinit var userRepository: UserRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +42,7 @@ class FragmentLogin : Fragment(), ActivityNavigation {
         super.onViewCreated(view, savedInstanceState)
 
         val apiService: Api = Api.getClient()
-        userRepository = UserRepository(apiService)
+        userRepository = UserRepository(apiService, context!!)
 
         viewModel.startActivityForResultEvent.setEventReceiver(this, this)
 
@@ -57,10 +57,11 @@ class FragmentLogin : Fragment(), ActivityNavigation {
 
             if (uiModel.showSuccess != null && !uiModel.showSuccess.consumed) {
                 uiModel.showSuccess.consume()?.let {
-                    nav_host.findNavController().popBackStack()
                     enter.title = userRepository.userLogin.username
                     favorites.isVisible = true
                     logout.isVisible = true
+//                    nav_host.findNavController().popBackStack()
+                    nav_host.findNavController().popBackStack(R.id.fragment_login, true)
                 }
             }
         })

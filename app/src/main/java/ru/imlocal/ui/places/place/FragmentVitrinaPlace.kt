@@ -17,13 +17,19 @@ import ru.imlocal.data.api.BASE_IMAGE_URL
 import ru.imlocal.data.api.SHOP_IMAGE_DIRECTION
 import ru.imlocal.data.repository.NetworkState
 import ru.imlocal.data.repository.PlaceRepository
+import ru.imlocal.extensions.showLoginSnackbar
+import ru.imlocal.extensions.showSnackbar
+import ru.imlocal.models.FavType
 import ru.imlocal.models.Place
+import ru.imlocal.ui.favorites.FavoritesRepository
+import ru.imlocal.utils.getUser
 
 
 class FragmentVitrinaPlace : Fragment() {
 
     private lateinit var viewModel: VitrinaPlaceViewModel
     private lateinit var placeRepository: PlaceRepository
+    private lateinit var favoritesRepository: FavoritesRepository
     private val args: FragmentVitrinaPlaceArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,12 +47,36 @@ class FragmentVitrinaPlace : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_vitrina, menu)
+        if (getUser(context!!).isLogin) {
+            if (!viewModel.isFavorite(args.placeId, FavType.PLACE)) {
+                menu.getItem(0).setIcon(R.drawable.ic_heart)
+            } else {
+                menu.getItem(0).setIcon(R.drawable.ic_heart_pressed)
+            }
+        }
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.add_to_favorites -> viewModel.addToFavorites(context, args.placeId)
+            R.id.add_to_favorites -> {
+                if (getUser(context!!).isLogin) {
+                    if (!viewModel.isFavorite(args.placeId, FavType.PLACE)) {
+                        viewModel.addToFavorites(args.placeId, context!!, FavType.PLACE)
+                        item.setIcon(R.drawable.ic_heart_pressed)
+                        cl_vitrina_place.showSnackbar(resources.getString(R.string.add_to_favorite))
+                    } else {
+                        viewModel.deleteFromFavorites(args.placeId, context!!, FavType.PLACE)
+                        item.setIcon(R.drawable.ic_heart)
+                        cl_vitrina_place.showSnackbar(resources.getString(R.string.delete_from_favorites))
+                    }
+                } else {
+                    cl_vitrina_place.showLoginSnackbar(
+                        fragment = this,
+                        action = FragmentVitrinaPlaceDirections.actionFragmentVitrinaPlaceToFragmentLogin()
+                    )
+                }
+            }
             R.id.share -> viewModel.share(context)
         }
         return super.onOptionsItemSelected(item)
@@ -57,6 +87,7 @@ class FragmentVitrinaPlace : Fragment() {
 
         val apiService: Api = Api.getClient()
         placeRepository = PlaceRepository(apiService)
+        favoritesRepository = FavoritesRepository(apiService, context!!)
 
         viewModel = getViewModel(args.placeId)
 
@@ -88,7 +119,7 @@ class FragmentVitrinaPlace : Fragment() {
         }
     }
 
-    fun flipperImages(photo: String, autostart: Boolean) {
+    private fun flipperImages(photo: String, autostart: Boolean) {
         val imageView = ImageView(activity)
         imageView.scaleType = ImageView.ScaleType.CENTER_CROP
         Glide.with(this)
@@ -111,6 +142,7 @@ class FragmentVitrinaPlace : Fragment() {
                 @Suppress("UNCHECKED_CAST")
                 return VitrinaPlaceViewModel(
                     placeRepository,
+                    favoritesRepository,
                     placeId
                 ) as T
             }

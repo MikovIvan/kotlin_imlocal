@@ -2,9 +2,7 @@ package ru.imlocal.ui.actions.action
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -21,12 +19,18 @@ import ru.imlocal.data.api.BASE_IMAGE_URL
 import ru.imlocal.data.api.SHOP_IMAGE_DIRECTION
 import ru.imlocal.data.repository.ActionRepository
 import ru.imlocal.data.repository.NetworkState
+import ru.imlocal.extensions.showLoginSnackbar
+import ru.imlocal.extensions.showSnackbar
 import ru.imlocal.models.Action
+import ru.imlocal.models.FavType
+import ru.imlocal.ui.favorites.FavoritesRepository
+import ru.imlocal.utils.getUser
 
 class FragmentVitrinaAction : Fragment() {
 
     private lateinit var viewModel: VitrinaActionViewModel
     private lateinit var actionRepository: ActionRepository
+    private lateinit var favoritesRepository: FavoritesRepository
     private val args: FragmentVitrinaActionArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,11 +45,49 @@ class FragmentVitrinaAction : Fragment() {
         return inflater.inflate(R.layout.fragment_vitrina_action, container, false)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_vitrina, menu)
+        if (getUser(context!!).isLogin) {
+            if (!viewModel.isFavorite(args.actId, FavType.ACTION)) {
+                menu.getItem(0).setIcon(R.drawable.ic_heart)
+            } else {
+                menu.getItem(0).setIcon(R.drawable.ic_heart_pressed)
+            }
+        }
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.add_to_favorites -> {
+                if (getUser(context!!).isLogin) {
+                    if (!viewModel.isFavorite(args.actId, FavType.ACTION)) {
+                        viewModel.addToFavorites(args.actId, context!!, FavType.ACTION)
+                        item.setIcon(R.drawable.ic_heart_pressed)
+                        cl_vitrina_action.showSnackbar(resources.getString(R.string.add_to_favorite))
+                    } else {
+                        viewModel.deleteFromFavorites(args.actId, context!!, FavType.ACTION)
+                        item.setIcon(R.drawable.ic_heart)
+                        cl_vitrina_action.showSnackbar(resources.getString(R.string.delete_from_favorites))
+                    }
+                } else {
+                    cl_vitrina_action.showLoginSnackbar(
+                        fragment = this,
+                        action = FragmentVitrinaActionDirections.actionFragmentVitrinaActionToFragmentLogin()
+                    )
+                }
+            }
+            R.id.share -> viewModel.share(context)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val apiService: Api = Api.getClient()
         actionRepository = ActionRepository(apiService)
+        favoritesRepository = FavoritesRepository(apiService, context!!)
 
         viewModel = getViewModel(args.actId)
 
@@ -101,6 +143,7 @@ class FragmentVitrinaAction : Fragment() {
                 @Suppress("UNCHECKED_CAST")
                 return VitrinaActionViewModel(
                     actionRepository,
+                    favoritesRepository,
                     actionId
                 ) as T
             }

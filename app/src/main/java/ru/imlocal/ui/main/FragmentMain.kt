@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.fragment_main.*
 import ru.imlocal.R
+import ru.imlocal.utils.getTab
+import ru.imlocal.utils.saveTab
 
 class FragmentMain : Fragment() {
 
@@ -34,7 +36,8 @@ class FragmentMain : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         fragment_main_tabs.setupWithViewPager(fragment_main_viewpager)
         fragment_main_viewpager.adapter = pagerAdapter
-        setUpLeftRightViewColor()
+        fragment_main_viewpager.currentItem = getTab(context)
+        setUpLeftRightViewColor(getTab(context))
         fragment_main_viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {}
             override fun onPageScrolled(
@@ -45,6 +48,7 @@ class FragmentMain : Fragment() {
             }
             override fun onPageSelected(position: Int) {
                 setUpLeftRightViewColor(position)
+                saveTab(position, context)
             }
         })
     }

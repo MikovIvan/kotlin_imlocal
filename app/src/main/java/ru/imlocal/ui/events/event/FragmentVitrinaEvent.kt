@@ -20,12 +20,18 @@ import ru.imlocal.data.newDateFormat
 import ru.imlocal.data.newDateFormat2
 import ru.imlocal.data.repository.EventRepository
 import ru.imlocal.data.repository.NetworkState
+import ru.imlocal.extensions.showLoginSnackbar
+import ru.imlocal.extensions.showSnackbar
 import ru.imlocal.models.Event
+import ru.imlocal.models.FavType
+import ru.imlocal.ui.favorites.FavoritesRepository
+import ru.imlocal.utils.getUser
 
 class FragmentVitrinaEvent : Fragment() {
 
     private lateinit var viewModel: VitrinaEventViewModel
     private lateinit var eventRepository: EventRepository
+    private lateinit var favoritesRepository: FavoritesRepository
     private val args: FragmentVitrinaEventArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,11 +46,49 @@ class FragmentVitrinaEvent : Fragment() {
         return inflater.inflate(R.layout.fragment_vitrina_event, container, false)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_vitrina, menu)
+        if (getUser(context!!).isLogin) {
+            if (!viewModel.isFavorite(args.eventId, FavType.EVENT)) {
+                menu.getItem(0).setIcon(R.drawable.ic_heart)
+            } else {
+                menu.getItem(0).setIcon(R.drawable.ic_heart_pressed)
+            }
+        }
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.add_to_favorites -> {
+                if (getUser(context!!).isLogin) {
+                    if (!viewModel.isFavorite(args.eventId, FavType.EVENT)) {
+                        viewModel.addToFavorites(args.eventId, context!!, FavType.EVENT)
+                        item.setIcon(R.drawable.ic_heart_pressed)
+                        cl_vitrina_event.showSnackbar(resources.getString(R.string.add_to_favorite))
+                    } else {
+                        viewModel.deleteFromFavorites(args.eventId, context!!, FavType.EVENT)
+                        item.setIcon(R.drawable.ic_heart)
+                        cl_vitrina_event.showSnackbar(resources.getString(R.string.delete_from_favorites))
+                    }
+                } else {
+                    cl_vitrina_event.showLoginSnackbar(
+                        fragment = this,
+                        action = FragmentVitrinaEventDirections.actionFragmentVitrinaEventToFragmentLogin()
+                    )
+                }
+            }
+            R.id.share -> viewModel.share(context)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val apiService: Api = Api.getClient()
         eventRepository = EventRepository(apiService)
+        favoritesRepository = FavoritesRepository(apiService, context!!)
 
         viewModel = getViewModel(args.eventId)
 
@@ -58,19 +102,6 @@ class FragmentVitrinaEvent : Fragment() {
             txt_error_vitrina_event.visibility =
                 if (it == NetworkState.ERROR) View.VISIBLE else View.GONE
         })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_vitrina, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.add_to_favorites -> viewModel.addToFavorites(context, args.eventId)
-            R.id.share -> viewModel.share(context)
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun bindUI(event: Event) {
@@ -121,6 +152,7 @@ class FragmentVitrinaEvent : Fragment() {
                 @Suppress("UNCHECKED_CAST")
                 return VitrinaEventViewModel(
                     eventRepository,
+                    favoritesRepository,
                     actionId
                 ) as T
             }

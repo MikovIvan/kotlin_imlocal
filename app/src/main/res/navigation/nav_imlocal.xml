@@ -19,8 +19,11 @@
         android:name="ru.imlocal.ui.places.place.FragmentVitrinaPlace">
         <argument
             android:name="placeId"
-            android:defaultValue="1"
+            android:defaultValue="0"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_fragment_vitrina_place_to_fragment_login"
+            app:destination="@id/fragment_login" />
     </fragment>
 
     <fragment
@@ -65,7 +68,11 @@
         android:id="@+id/fragment_list_actions"
         android:name="ru.imlocal.ui.actions.FragmentListActions"
         android:label="fragment_list_actions"
-        tools:layout="@layout/fragment_list_actions" />
+        tools:layout="@layout/fragment_list_actions">
+        <action
+            android:id="@+id/action_fragment_list_actions_to_fragment_login"
+            app:destination="@id/fragment_login" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_list_events"
         android:name="ru.imlocal.ui.events.FragmentListEvents"
@@ -79,8 +86,17 @@
     <fragment
         android:id="@+id/fragment_favorites"
         android:name="ru.imlocal.ui.favorites.FragmentFavorites"
-        android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_fragment_favorites_to_fragment_vitrina_place"
+            app:destination="@id/fragment_vitrina_place" />
+        <action
+            android:id="@+id/action_fragment_favorites_to_fragment_vitrina_action"
+            app:destination="@id/fragment_vitrina_action" />
+        <action
+            android:id="@+id/action_fragment_favorites_to_fragment_vitrina_event"
+            app:destination="@id/fragment_vitrina_event" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_feedback"
         android:name="ru.imlocal.ui.feedback.FragmentFeedback"
@@ -96,6 +112,9 @@
             android:name="actId"
             android:defaultValue="0"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_fragment_vitrina_action_to_fragment_login"
+            app:destination="@id/fragment_login" />
     </fragment>
     <fragment
         android:id="@+id/fragment_vitrina_event"
@@ -103,8 +122,11 @@
         tools:layout="@layout/fragment_vitrina_event">
         <argument
             android:name="eventId"
-            android:defaultValue="1"
+            android:defaultValue="0"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_fragment_vitrina_event_to_fragment_login"
+            app:destination="@id/fragment_login" />
     </fragment>
 
     <fragment

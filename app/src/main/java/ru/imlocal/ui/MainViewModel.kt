@@ -6,17 +6,25 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.vk.sdk.VKSdk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ru.imlocal.extensions.getUser
+import ru.imlocal.data.repository.UserRepository
 import ru.imlocal.models.User
+import ru.imlocal.ui.favorites.FavoritesRepository
+import ru.imlocal.utils.getUser
 
-class MainViewModel(val app: Application) : AndroidViewModel(app) {
+class MainViewModel(
+    val app: Application,
+    private val favoritesRepository: FavoritesRepository,
+    private val userRepository: UserRepository
+) : AndroidViewModel(app) {
 
-    fun getCurrentUser(context: Context): MutableLiveData<User> {
+    fun getCurrentUser(context: Context): LiveData<User> {
+//        return userRepository.getCurrentUser()
         val user: MutableLiveData<User> = MutableLiveData(User())
-        user.postValue(getUser(context))
+        if (VKSdk.isLoggedIn()) user.postValue(getUser(context)) else user.postValue(User())
         return user
     }
 
@@ -30,6 +38,10 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
         }
 
         return result
+    }
+
+    fun getFavorites() {
+        favoritesRepository.getFavorites()
     }
 }
 
